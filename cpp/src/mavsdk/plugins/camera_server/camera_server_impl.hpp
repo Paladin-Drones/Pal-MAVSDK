@@ -57,6 +57,11 @@ public:
     void unsubscribe_set_mode(CameraServer::SetModeHandle handle);
     CameraServer::Result respond_set_mode(CameraServer::CameraFeedback set_mode_feedback);
 
+    CameraServer::SetSourceHandle
+    subscribe_set_source(const CameraServer::SetSourceCallback& callback);
+    void unsubscribe_set_source(CameraServer::SetSourceHandle handle);
+    CameraServer::Result respond_set_source(CameraServer::CameraFeedback set_source_feedback);
+
     CameraServer::StorageInformationHandle
     subscribe_storage_information(const CameraServer::StorageInformationCallback& callback);
     void unsubscribe_storage_information(CameraServer::StorageInformationHandle handle);
@@ -163,6 +168,8 @@ private:
     std::optional<mavlink_command_ack_t>
     process_set_camera_mode(const MavlinkCommandReceiver::CommandLong& command);
     std::optional<mavlink_command_ack_t>
+    process_set_camera_source(const MavlinkCommandReceiver::CommandLong& command);
+    std::optional<mavlink_command_ack_t>
     process_set_camera_zoom(const MavlinkCommandReceiver::CommandLong& command);
     std::optional<mavlink_command_ack_t>
     process_set_camera_focus(const MavlinkCommandReceiver::CommandLong& command);
@@ -238,6 +245,7 @@ private:
     CallbackList<int32_t> _start_video_streaming_callbacks{};
     CallbackList<int32_t> _stop_video_streaming_callbacks{};
     CallbackList<CameraServer::Mode> _set_mode_callbacks{};
+    CallbackList<CameraServer::CameraSource> _set_source_callbacks{};
     CallbackList<int32_t> _storage_information_callbacks{};
     CallbackList<int32_t> _capture_status_callbacks{};
     CallbackList<int32_t> _format_storage_callbacks{};
@@ -252,6 +260,7 @@ private:
     MavlinkCommandReceiver::CommandLong _last_start_video_streaming_command;
     MavlinkCommandReceiver::CommandLong _last_stop_video_streaming_command;
     MavlinkCommandReceiver::CommandLong _last_set_mode_command;
+    MavlinkCommandReceiver::CommandLong _last_set_source_command;
     MavlinkCommandReceiver::CommandLong _last_storage_information_command;
     MavlinkCommandReceiver::CommandLong _last_capture_status_command;
     MavlinkCommandReceiver::CommandLong _last_format_storage_command;

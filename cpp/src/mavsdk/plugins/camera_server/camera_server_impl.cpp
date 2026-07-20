@@ -71,6 +71,12 @@ void CameraServerImpl::init()
         },
         this);
     _server_component_impl->register_mavlink_command_handler(
+        MAV_CMD_SET_CAMERA_SOURCE,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            return process_set_camera_source(command);
+        },
+        this);
+    _server_component_impl->register_mavlink_command_handler(
         MAV_CMD_SET_CAMERA_ZOOM,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return process_set_camera_zoom(command);
@@ -656,6 +662,50 @@ CameraServerImpl::respond_set_mode(CameraServer::CameraFeedback set_mode_feedbac
         case CameraServer::CameraFeedback::Failed: {
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_set_mode_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+}
+
+CameraServer::SetSourceHandle
+CameraServerImpl::subscribe_set_source(const CameraServer::SetSourceCallback& callback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    return _set_source_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_set_source(CameraServer::SetSourceHandle handle)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+    _set_source_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_set_source(CameraServer::CameraFeedback set_source_feedback)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+
+    switch (set_source_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_set_source_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_set_source_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_set_source_command, MAV_RESULT_FAILED);
             _server_component_impl->send_command_ack(command_ack);
             return CameraServer::Result::Success;
         }
@@ -1484,6 +1534,35 @@ CameraServerImpl::process_set_camera_mode(const MavlinkCommandReceiver::CommandL
     });
 
     return std::nullopt;
+}
+
+std::optional<mavlink_command_ack_t>
+CameraServerImpl::process_set_camera_source(const MavlinkCommandReceiver::CommandLong& command)
+{
+    std::lock_guard<std::mutex> lg{_mutex};
+
+    if (_set_source_callbacks.empty()) {
+        LogDebug("Set source requested with no set source subscriber");
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
+
+    // Convert raw parameters back to type-safe Enums matching your proto file layout
+    CameraServer::CameraSource convert_camera_source;
+    convert_camera_source.primary_source =
+        static_cast<CameraServer::CameraSource::Source>(static_cast<int>(command.params.param1));
+    convert_camera_source.secondary_source =
+        static_cast<CameraServer::CameraSource::Source>(static_cast<int>(command.params.param2));
+
+    // Cache the target context for the response pass later
+    _last_set_source_command = command;
+
+    // Push into the thread execution queue safely
+    _set_source_callbacks.queue(convert_camera_source, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
+
+    return std::nullopt; // Defer the ACK until respond_set_source is called by the app
 }
 
 std::optional<mavlink_command_ack_t>

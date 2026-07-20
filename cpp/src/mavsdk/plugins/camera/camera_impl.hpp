@@ -109,6 +109,12 @@ public:
     Camera::ModeHandle subscribe_mode(const Camera::ModeCallback& callback);
     void unsubscribe_mode(Camera::ModeHandle handle);
 
+    Camera::Result set_source(int32_t component_id, Camera::CameraSource camera_source);
+    void set_source_async(
+        int32_t component_id,
+        Camera::CameraSource camera_source,
+        const Camera::ResultCallback callback);
+
     Camera::CaptureInfoHandle subscribe_capture_info(const Camera::CaptureInfoCallback& callback);
     void unsubscribe_capture_info(Camera::CaptureInfoHandle handle);
 
@@ -300,6 +306,7 @@ private:
     static Camera::Storage::StorageType storage_type_from_mavlink(int storage_type);
     static float to_mavlink_camera_mode(Camera::Mode mode);
     static Camera::Mode to_camera_mode(uint8_t mavlink_camera_mode);
+    static float to_mavlink_camera_source(Camera::CameraSource::Source source);
 
     CallEveryHandler::Cookie _camera_information_call_every_cookie{};
     CallEveryHandler::Cookie _request_missing_capture_info_cookie{};

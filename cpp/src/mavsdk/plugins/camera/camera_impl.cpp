@@ -960,6 +960,52 @@ void CameraImpl::set_mode_async(
         });
 }
 
+float CameraImpl::to_mavlink_camera_source(const Camera::CameraSource::Source source)
+{
+    switch (source) {
+        case Camera::CameraSource::Source::Rgb:
+            return 1.0f; // Matches your MAVLink spec
+        case Camera::CameraSource::Source::Ir:
+            return 2.0f;
+        case Camera::CameraSource::Source::Ndvi:
+            return 3.0f;
+        case Camera::CameraSource::Source::Default:
+        default:
+            return 0.0f;
+    }
+}
+
+void CameraImpl::set_source_async(
+    int32_t component_id, Camera::CameraSource camera_source, const Camera::ResultCallback callback)
+{
+    MavlinkCommandSender::CommandLong command{};
+
+    command.command = MAV_CMD_SET_CAMERA_SOURCE;
+    command.target_component_id = fixup_component_target(component_id);
+    command.params.maybe_param1 = to_mavlink_camera_source(camera_source.primary_source);
+    command.params.maybe_param2 = to_mavlink_camera_source(camera_source.secondary_source);
+
+    _system_impl->send_command_async(
+        command, [callback](MavlinkCommandSender::Result result, float progress) {
+            UNUSED(progress);
+            if (callback) {
+                // Call the conversion helper to return the correct public API enum type
+                callback(camera_result_from_command_result(result));
+            }
+        });
+}
+
+Camera::Result CameraImpl::set_source(int32_t component_id, Camera::CameraSource camera_source)
+{
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
+
+    set_source_async(
+        component_id, camera_source, [&prom](Camera::Result result) { prom->set_value(result); });
+
+    return ret.get();
+}
+
 Camera::ModeHandle CameraImpl::subscribe_mode(const Camera::ModeCallback& callback)
 {
     std::lock_guard lock(_mutex);
