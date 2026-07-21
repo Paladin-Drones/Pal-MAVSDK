@@ -13,96 +13,133 @@ using FilesystemEntry = Ftp::FilesystemEntry;
 using ListDirectoryData = Ftp::ListDirectoryData;
 using ProgressData = Ftp::ProgressData;
 
+
+
+
 Ftp::Ftp(System& system) : PluginBase(), _impl{std::make_unique<FtpImpl>(system)} {}
 
 Ftp::Ftp(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<FtpImpl>(system)} {}
 
+
 Ftp::~Ftp() {}
 
-void Ftp::download_async(
-    std::string remote_file_path,
-    std::string local_dir,
-    bool use_burst,
-    const DownloadCallback& callback)
+
+
+    
+void Ftp::download_async(std::string remote_file_path, std::string local_dir, bool use_burst, const DownloadCallback& callback)
 {
     _impl->download_async(remote_file_path, local_dir, use_burst, callback);
 }
+    
 
-void Ftp::upload_async(
-    std::string local_file_path, std::string remote_dir, const UploadCallback& callback)
+
+
+
+
+    
+void Ftp::upload_async(std::string local_file_path, std::string remote_dir, const UploadCallback& callback)
 {
     _impl->upload_async(local_file_path, remote_dir, callback);
 }
+    
+
+
+
+
 
 void Ftp::list_directory_async(std::string remote_dir, const ListDirectoryCallback callback)
 {
     _impl->list_directory_async(remote_dir, callback);
 }
 
+
+
 std::pair<Ftp::Result, Ftp::ListDirectoryData> Ftp::list_directory(std::string remote_dir) const
 {
     return _impl->list_directory(remote_dir);
 }
+
+
 
 void Ftp::create_directory_async(std::string remote_dir, const ResultCallback callback)
 {
     _impl->create_directory_async(remote_dir, callback);
 }
 
+
+
 Ftp::Result Ftp::create_directory(std::string remote_dir) const
 {
     return _impl->create_directory(remote_dir);
 }
+
+
 
 void Ftp::remove_directory_async(std::string remote_dir, const ResultCallback callback)
 {
     _impl->remove_directory_async(remote_dir, callback);
 }
 
+
+
 Ftp::Result Ftp::remove_directory(std::string remote_dir) const
 {
     return _impl->remove_directory(remote_dir);
 }
+
+
 
 void Ftp::remove_file_async(std::string remote_file_path, const ResultCallback callback)
 {
     _impl->remove_file_async(remote_file_path, callback);
 }
 
+
+
 Ftp::Result Ftp::remove_file(std::string remote_file_path) const
 {
     return _impl->remove_file(remote_file_path);
 }
 
-void Ftp::rename_async(
-    std::string remote_from_path, std::string remote_to_path, const ResultCallback callback)
+
+
+void Ftp::rename_async(std::string remote_from_path, std::string remote_to_path, const ResultCallback callback)
 {
     _impl->rename_async(remote_from_path, remote_to_path, callback);
 }
+
+
 
 Ftp::Result Ftp::rename(std::string remote_from_path, std::string remote_to_path) const
 {
     return _impl->rename(remote_from_path, remote_to_path);
 }
 
-void Ftp::are_files_identical_async(
-    std::string local_file_path,
-    std::string remote_file_path,
-    const AreFilesIdenticalCallback callback)
+
+
+void Ftp::are_files_identical_async(std::string local_file_path, std::string remote_file_path, const AreFilesIdenticalCallback callback)
 {
     _impl->are_files_identical_async(local_file_path, remote_file_path, callback);
 }
 
-std::pair<Ftp::Result, bool>
-Ftp::are_files_identical(std::string local_file_path, std::string remote_file_path) const
+
+
+std::pair<Ftp::Result, bool> Ftp::are_files_identical(std::string local_file_path, std::string remote_file_path) const
 {
     return _impl->are_files_identical(local_file_path, remote_file_path);
 }
+
+
+
+
 
 Ftp::Result Ftp::set_target_compid(uint32_t compid) const
 {
     return _impl->set_target_compid(compid);
 }
+
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Ftp::FilesystemEntry::EntryType const& entry_type)
 {
@@ -118,23 +155,24 @@ MAVSDK_PUBLIC std::string_view to_string(Ftp::FilesystemEntry::EntryType const& 
     }
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Ftp::FilesystemEntry::EntryType const& entry_type)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::FilesystemEntry::EntryType const& entry_type)
 {
     return str << to_string(entry_type);
 }
 MAVSDK_PUBLIC bool operator==(const Ftp::FilesystemEntry& lhs, const Ftp::FilesystemEntry& rhs)
 {
-    return (rhs.name == lhs.name) && (rhs.entry_type == lhs.entry_type) &&
-           (rhs.size_bytes == lhs.size_bytes) &&
-           (rhs.modification_time_s == lhs.modification_time_s);
+    return
+        (rhs.name == lhs.name) &&
+        (rhs.entry_type == lhs.entry_type) &&
+        (rhs.size_bytes == lhs.size_bytes) &&
+        (rhs.modification_time_s == lhs.modification_time_s);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Ftp::FilesystemEntry const& filesystem_entry)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::FilesystemEntry const& filesystem_entry)
 {
     str << std::setprecision(15);
-    str << "filesystem_entry:" << '\n' << "{\n";
+    str << "filesystem_entry:" << '\n'
+        << "{\n";
     str << "    name: " << filesystem_entry.name << '\n';
     str << "    entry_type: " << filesystem_entry.entry_type << '\n';
     str << "    size_bytes: " << filesystem_entry.size_bytes << '\n';
@@ -143,19 +181,20 @@ operator<<(std::ostream& str, Ftp::FilesystemEntry const& filesystem_entry)
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs)
 {
-    return (rhs.entries == lhs.entries);
+    return
+        (rhs.entries == lhs.entries);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data)
 {
     str << std::setprecision(15);
-    str << "list_directory_data:" << '\n' << "{\n";
+    str << "list_directory_data:" << '\n'
+        << "{\n";
     str << "    entries: [";
-    for (auto it = list_directory_data.entries.begin(); it != list_directory_data.entries.end();
-         ++it) {
+    for (auto it = list_directory_data.entries.begin(); it != list_directory_data.entries.end(); ++it) {
         str << *it;
         str << (it + 1 != list_directory_data.entries.end() ? ", " : "]\n");
     }
@@ -163,20 +202,26 @@ operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data)
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Ftp::ProgressData& lhs, const Ftp::ProgressData& rhs)
 {
-    return (rhs.bytes_transferred == lhs.bytes_transferred) && (rhs.total_bytes == lhs.total_bytes);
+    return
+        (rhs.bytes_transferred == lhs.bytes_transferred) &&
+        (rhs.total_bytes == lhs.total_bytes);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::ProgressData const& progress_data)
 {
     str << std::setprecision(15);
-    str << "progress_data:" << '\n' << "{\n";
+    str << "progress_data:" << '\n'
+        << "{\n";
     str << "    bytes_transferred: " << progress_data.bytes_transferred << '\n';
     str << "    total_bytes: " << progress_data.total_bytes << '\n';
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Ftp::Result const& result)
 {
@@ -216,5 +261,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Ftp::Result const& res
 {
     return str << to_string(result);
 }
+
+
+
 
 } // namespace mavsdk

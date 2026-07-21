@@ -14,72 +14,91 @@ using Polygon = Geofence::Polygon;
 using Circle = Geofence::Circle;
 using GeofenceData = Geofence::GeofenceData;
 
+
+
+
 Geofence::Geofence(System& system) : PluginBase(), _impl{std::make_unique<GeofenceImpl>(system)} {}
 
-Geofence::Geofence(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<GeofenceImpl>(system)}
-{}
+Geofence::Geofence(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<GeofenceImpl>(system)} {}
+
 
 Geofence::~Geofence() {}
+
+
 
 void Geofence::upload_geofence_async(GeofenceData geofence_data, const ResultCallback callback)
 {
     _impl->upload_geofence_async(geofence_data, callback);
 }
 
+
+
 Geofence::Result Geofence::upload_geofence(GeofenceData geofence_data) const
 {
     return _impl->upload_geofence(geofence_data);
 }
+
+
 
 void Geofence::download_geofence_async(const DownloadGeofenceCallback callback)
 {
     _impl->download_geofence_async(callback);
 }
 
+
+
 std::pair<Geofence::Result, Geofence::GeofenceData> Geofence::download_geofence() const
 {
     return _impl->download_geofence();
 }
+
+
 
 void Geofence::clear_geofence_async(const ResultCallback callback)
 {
     _impl->clear_geofence_async(callback);
 }
 
+
+
 Geofence::Result Geofence::clear_geofence() const
 {
     return _impl->clear_geofence();
 }
 
+
+
 MAVSDK_PUBLIC bool operator==(const Geofence::Point& lhs, const Geofence::Point& rhs)
 {
-    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            rhs.latitude_deg == lhs.latitude_deg) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            rhs.longitude_deg == lhs.longitude_deg);
+    return
+        ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) || rhs.latitude_deg == lhs.latitude_deg) &&
+        ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) || rhs.longitude_deg == lhs.longitude_deg);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Point const& point)
 {
     str << std::setprecision(15);
-    str << "point:" << '\n' << "{\n";
+    str << "point:" << '\n'
+        << "{\n";
     str << "    latitude_deg: " << point.latitude_deg << '\n';
     str << "    longitude_deg: " << point.longitude_deg << '\n';
     str << '}';
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Geofence::Polygon& lhs, const Geofence::Polygon& rhs)
 {
-    return (rhs.points == lhs.points) && (rhs.fence_type == lhs.fence_type);
+    return
+        (rhs.points == lhs.points) &&
+        (rhs.fence_type == lhs.fence_type);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Polygon const& polygon)
 {
     str << std::setprecision(15);
-    str << "polygon:" << '\n' << "{\n";
+    str << "polygon:" << '\n'
+        << "{\n";
     str << "    points: [";
     for (auto it = polygon.points.begin(); it != polygon.points.end(); ++it) {
         str << *it;
@@ -90,17 +109,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Polygon cons
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Geofence::Circle& lhs, const Geofence::Circle& rhs)
 {
-    return (rhs.point == lhs.point) &&
-           ((std::isnan(rhs.radius) && std::isnan(lhs.radius)) || rhs.radius == lhs.radius) &&
-           (rhs.fence_type == lhs.fence_type);
+    return
+        (rhs.point == lhs.point) &&
+        ((std::isnan(rhs.radius) && std::isnan(lhs.radius)) || rhs.radius == lhs.radius) &&
+        (rhs.fence_type == lhs.fence_type);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Circle const& circle)
 {
     str << std::setprecision(15);
-    str << "circle:" << '\n' << "{\n";
+    str << "circle:" << '\n'
+        << "{\n";
     str << "    point: " << circle.point << '\n';
     str << "    radius: " << circle.radius << '\n';
     str << "    fence_type: " << circle.fence_type << '\n';
@@ -108,16 +130,19 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Circle const
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Geofence::GeofenceData& lhs, const Geofence::GeofenceData& rhs)
 {
-    return (rhs.polygons == lhs.polygons) && (rhs.circles == lhs.circles);
+    return
+        (rhs.polygons == lhs.polygons) &&
+        (rhs.circles == lhs.circles);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Geofence::GeofenceData const& geofence_data)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::GeofenceData const& geofence_data)
 {
     str << std::setprecision(15);
-    str << "geofence_data:" << '\n' << "{\n";
+    str << "geofence_data:" << '\n'
+        << "{\n";
     str << "    polygons: [";
     for (auto it = geofence_data.polygons.begin(); it != geofence_data.polygons.end(); ++it) {
         str << *it;
@@ -131,6 +156,8 @@ operator<<(std::ostream& str, Geofence::GeofenceData const& geofence_data)
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Geofence::Result const& result)
 {
@@ -161,6 +188,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::Result const
     return str << to_string(result);
 }
 
+
+
 MAVSDK_PUBLIC std::string_view to_string(Geofence::FenceType const& fence_type)
 {
     switch (fence_type) {
@@ -177,5 +206,6 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Geofence::FenceType co
 {
     return str << to_string(fence_type);
 }
+
 
 } // namespace mavsdk

@@ -42,16 +42,19 @@ using GpsGlobalOrigin = Telemetry::GpsGlobalOrigin;
 using Altitude = Telemetry::Altitude;
 using Wind = Telemetry::Wind;
 
-Telemetry::Telemetry(System& system) : PluginBase(), _impl{std::make_unique<TelemetryImpl>(system)}
-{}
 
-Telemetry::Telemetry(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<TelemetryImpl>(system)}
-{}
+
+
+Telemetry::Telemetry(System& system) : PluginBase(), _impl{std::make_unique<TelemetryImpl>(system)} {}
+
+Telemetry::Telemetry(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<TelemetryImpl>(system)} {}
+
 
 Telemetry::~Telemetry() {}
 
+
+
+    
 Telemetry::PositionHandle Telemetry::subscribe_position(const PositionCallback& callback)
 {
     return _impl->subscribe_position(callback);
@@ -61,12 +64,20 @@ void Telemetry::unsubscribe_position(PositionHandle handle)
 {
     _impl->unsubscribe_position(handle);
 }
+    
 
-Telemetry::Position Telemetry::position() const
+
+
+
+Telemetry::Position
+Telemetry::position() const
 {
     return _impl->position();
 }
 
+
+
+    
 Telemetry::HomeHandle Telemetry::subscribe_home(const HomeCallback& callback)
 {
     return _impl->subscribe_home(callback);
@@ -76,12 +87,20 @@ void Telemetry::unsubscribe_home(HomeHandle handle)
 {
     _impl->unsubscribe_home(handle);
 }
+    
 
-Telemetry::HomePosition Telemetry::home() const
+
+
+
+Telemetry::HomePosition
+Telemetry::home() const
 {
     return _impl->home();
 }
 
+
+
+    
 Telemetry::InAirHandle Telemetry::subscribe_in_air(const InAirCallback& callback)
 {
     return _impl->subscribe_in_air(callback);
@@ -91,12 +110,20 @@ void Telemetry::unsubscribe_in_air(InAirHandle handle)
 {
     _impl->unsubscribe_in_air(handle);
 }
+    
 
-bool Telemetry::in_air() const
+
+
+
+bool
+Telemetry::in_air() const
 {
     return _impl->in_air();
 }
 
+
+
+    
 Telemetry::LandedStateHandle Telemetry::subscribe_landed_state(const LandedStateCallback& callback)
 {
     return _impl->subscribe_landed_state(callback);
@@ -106,12 +133,20 @@ void Telemetry::unsubscribe_landed_state(LandedStateHandle handle)
 {
     _impl->unsubscribe_landed_state(handle);
 }
+    
 
-Telemetry::LandedState Telemetry::landed_state() const
+
+
+
+Telemetry::LandedState
+Telemetry::landed_state() const
 {
     return _impl->landed_state();
 }
 
+
+
+    
 Telemetry::ArmedHandle Telemetry::subscribe_armed(const ArmedCallback& callback)
 {
     return _impl->subscribe_armed(callback);
@@ -121,12 +156,20 @@ void Telemetry::unsubscribe_armed(ArmedHandle handle)
 {
     _impl->unsubscribe_armed(handle);
 }
+    
 
-bool Telemetry::armed() const
+
+
+
+bool
+Telemetry::armed() const
 {
     return _impl->armed();
 }
 
+
+
+    
 Telemetry::VtolStateHandle Telemetry::subscribe_vtol_state(const VtolStateCallback& callback)
 {
     return _impl->subscribe_vtol_state(callback);
@@ -136,14 +179,21 @@ void Telemetry::unsubscribe_vtol_state(VtolStateHandle handle)
 {
     _impl->unsubscribe_vtol_state(handle);
 }
+    
 
-Telemetry::VtolState Telemetry::vtol_state() const
+
+
+
+Telemetry::VtolState
+Telemetry::vtol_state() const
 {
     return _impl->vtol_state();
 }
 
-Telemetry::AttitudeQuaternionHandle
-Telemetry::subscribe_attitude_quaternion(const AttitudeQuaternionCallback& callback)
+
+
+    
+Telemetry::AttitudeQuaternionHandle Telemetry::subscribe_attitude_quaternion(const AttitudeQuaternionCallback& callback)
 {
     return _impl->subscribe_attitude_quaternion(callback);
 }
@@ -152,14 +202,21 @@ void Telemetry::unsubscribe_attitude_quaternion(AttitudeQuaternionHandle handle)
 {
     _impl->unsubscribe_attitude_quaternion(handle);
 }
+    
 
-Telemetry::Quaternion Telemetry::attitude_quaternion() const
+
+
+
+Telemetry::Quaternion
+Telemetry::attitude_quaternion() const
 {
     return _impl->attitude_quaternion();
 }
 
-Telemetry::AttitudeEulerHandle
-Telemetry::subscribe_attitude_euler(const AttitudeEulerCallback& callback)
+
+
+    
+Telemetry::AttitudeEulerHandle Telemetry::subscribe_attitude_euler(const AttitudeEulerCallback& callback)
 {
     return _impl->subscribe_attitude_euler(callback);
 }
@@ -168,14 +225,21 @@ void Telemetry::unsubscribe_attitude_euler(AttitudeEulerHandle handle)
 {
     _impl->unsubscribe_attitude_euler(handle);
 }
+    
 
-Telemetry::EulerAngle Telemetry::attitude_euler() const
+
+
+
+Telemetry::EulerAngle
+Telemetry::attitude_euler() const
 {
     return _impl->attitude_euler();
 }
 
-Telemetry::AttitudeAngularVelocityBodyHandle Telemetry::subscribe_attitude_angular_velocity_body(
-    const AttitudeAngularVelocityBodyCallback& callback)
+
+
+    
+Telemetry::AttitudeAngularVelocityBodyHandle Telemetry::subscribe_attitude_angular_velocity_body(const AttitudeAngularVelocityBodyCallback& callback)
 {
     return _impl->subscribe_attitude_angular_velocity_body(callback);
 }
@@ -184,12 +248,20 @@ void Telemetry::unsubscribe_attitude_angular_velocity_body(AttitudeAngularVeloci
 {
     _impl->unsubscribe_attitude_angular_velocity_body(handle);
 }
+    
 
-Telemetry::AngularVelocityBody Telemetry::attitude_angular_velocity_body() const
+
+
+
+Telemetry::AngularVelocityBody
+Telemetry::attitude_angular_velocity_body() const
 {
     return _impl->attitude_angular_velocity_body();
 }
 
+
+
+    
 Telemetry::VelocityNedHandle Telemetry::subscribe_velocity_ned(const VelocityNedCallback& callback)
 {
     return _impl->subscribe_velocity_ned(callback);
@@ -199,12 +271,20 @@ void Telemetry::unsubscribe_velocity_ned(VelocityNedHandle handle)
 {
     _impl->unsubscribe_velocity_ned(handle);
 }
+    
 
-Telemetry::VelocityNed Telemetry::velocity_ned() const
+
+
+
+Telemetry::VelocityNed
+Telemetry::velocity_ned() const
 {
     return _impl->velocity_ned();
 }
 
+
+
+    
 Telemetry::GpsInfoHandle Telemetry::subscribe_gps_info(const GpsInfoCallback& callback)
 {
     return _impl->subscribe_gps_info(callback);
@@ -214,12 +294,20 @@ void Telemetry::unsubscribe_gps_info(GpsInfoHandle handle)
 {
     _impl->unsubscribe_gps_info(handle);
 }
+    
 
-Telemetry::GpsInfo Telemetry::gps_info() const
+
+
+
+Telemetry::GpsInfo
+Telemetry::gps_info() const
 {
     return _impl->gps_info();
 }
 
+
+
+    
 Telemetry::RawGpsHandle Telemetry::subscribe_raw_gps(const RawGpsCallback& callback)
 {
     return _impl->subscribe_raw_gps(callback);
@@ -229,12 +317,20 @@ void Telemetry::unsubscribe_raw_gps(RawGpsHandle handle)
 {
     _impl->unsubscribe_raw_gps(handle);
 }
+    
 
-Telemetry::RawGps Telemetry::raw_gps() const
+
+
+
+Telemetry::RawGps
+Telemetry::raw_gps() const
 {
     return _impl->raw_gps();
 }
 
+
+
+    
 Telemetry::BatteryHandle Telemetry::subscribe_battery(const BatteryCallback& callback)
 {
     return _impl->subscribe_battery(callback);
@@ -244,12 +340,20 @@ void Telemetry::unsubscribe_battery(BatteryHandle handle)
 {
     _impl->unsubscribe_battery(handle);
 }
+    
 
-Telemetry::Battery Telemetry::battery() const
+
+
+
+Telemetry::Battery
+Telemetry::battery() const
 {
     return _impl->battery();
 }
 
+
+
+    
 Telemetry::FlightModeHandle Telemetry::subscribe_flight_mode(const FlightModeCallback& callback)
 {
     return _impl->subscribe_flight_mode(callback);
@@ -259,12 +363,20 @@ void Telemetry::unsubscribe_flight_mode(FlightModeHandle handle)
 {
     _impl->unsubscribe_flight_mode(handle);
 }
+    
 
-Telemetry::FlightMode Telemetry::flight_mode() const
+
+
+
+Telemetry::FlightMode
+Telemetry::flight_mode() const
 {
     return _impl->flight_mode();
 }
 
+
+
+    
 Telemetry::HealthHandle Telemetry::subscribe_health(const HealthCallback& callback)
 {
     return _impl->subscribe_health(callback);
@@ -274,12 +386,20 @@ void Telemetry::unsubscribe_health(HealthHandle handle)
 {
     _impl->unsubscribe_health(handle);
 }
+    
 
-Telemetry::Health Telemetry::health() const
+
+
+
+Telemetry::Health
+Telemetry::health() const
 {
     return _impl->health();
 }
 
+
+
+    
 Telemetry::RcStatusHandle Telemetry::subscribe_rc_status(const RcStatusCallback& callback)
 {
     return _impl->subscribe_rc_status(callback);
@@ -289,12 +409,20 @@ void Telemetry::unsubscribe_rc_status(RcStatusHandle handle)
 {
     _impl->unsubscribe_rc_status(handle);
 }
+    
 
-Telemetry::RcStatus Telemetry::rc_status() const
+
+
+
+Telemetry::RcStatus
+Telemetry::rc_status() const
 {
     return _impl->rc_status();
 }
 
+
+
+    
 Telemetry::StatusTextHandle Telemetry::subscribe_status_text(const StatusTextCallback& callback)
 {
     return _impl->subscribe_status_text(callback);
@@ -304,14 +432,21 @@ void Telemetry::unsubscribe_status_text(StatusTextHandle handle)
 {
     _impl->unsubscribe_status_text(handle);
 }
+    
 
-Telemetry::StatusText Telemetry::status_text() const
+
+
+
+Telemetry::StatusText
+Telemetry::status_text() const
 {
     return _impl->status_text();
 }
 
-Telemetry::ActuatorControlTargetHandle
-Telemetry::subscribe_actuator_control_target(const ActuatorControlTargetCallback& callback)
+
+
+    
+Telemetry::ActuatorControlTargetHandle Telemetry::subscribe_actuator_control_target(const ActuatorControlTargetCallback& callback)
 {
     return _impl->subscribe_actuator_control_target(callback);
 }
@@ -320,14 +455,21 @@ void Telemetry::unsubscribe_actuator_control_target(ActuatorControlTargetHandle 
 {
     _impl->unsubscribe_actuator_control_target(handle);
 }
+    
 
-Telemetry::ActuatorControlTarget Telemetry::actuator_control_target() const
+
+
+
+Telemetry::ActuatorControlTarget
+Telemetry::actuator_control_target() const
 {
     return _impl->actuator_control_target();
 }
 
-Telemetry::ActuatorOutputStatusHandle
-Telemetry::subscribe_actuator_output_status(const ActuatorOutputStatusCallback& callback)
+
+
+    
+Telemetry::ActuatorOutputStatusHandle Telemetry::subscribe_actuator_output_status(const ActuatorOutputStatusCallback& callback)
 {
     return _impl->subscribe_actuator_output_status(callback);
 }
@@ -336,12 +478,20 @@ void Telemetry::unsubscribe_actuator_output_status(ActuatorOutputStatusHandle ha
 {
     _impl->unsubscribe_actuator_output_status(handle);
 }
+    
 
-Telemetry::ActuatorOutputStatus Telemetry::actuator_output_status() const
+
+
+
+Telemetry::ActuatorOutputStatus
+Telemetry::actuator_output_status() const
 {
     return _impl->actuator_output_status();
 }
 
+
+
+    
 Telemetry::OdometryHandle Telemetry::subscribe_odometry(const OdometryCallback& callback)
 {
     return _impl->subscribe_odometry(callback);
@@ -351,14 +501,21 @@ void Telemetry::unsubscribe_odometry(OdometryHandle handle)
 {
     _impl->unsubscribe_odometry(handle);
 }
+    
 
-Telemetry::Odometry Telemetry::odometry() const
+
+
+
+Telemetry::Odometry
+Telemetry::odometry() const
 {
     return _impl->odometry();
 }
 
-Telemetry::PositionVelocityNedHandle
-Telemetry::subscribe_position_velocity_ned(const PositionVelocityNedCallback& callback)
+
+
+    
+Telemetry::PositionVelocityNedHandle Telemetry::subscribe_position_velocity_ned(const PositionVelocityNedCallback& callback)
 {
     return _impl->subscribe_position_velocity_ned(callback);
 }
@@ -367,12 +524,20 @@ void Telemetry::unsubscribe_position_velocity_ned(PositionVelocityNedHandle hand
 {
     _impl->unsubscribe_position_velocity_ned(handle);
 }
+    
 
-Telemetry::PositionVelocityNed Telemetry::position_velocity_ned() const
+
+
+
+Telemetry::PositionVelocityNed
+Telemetry::position_velocity_ned() const
 {
     return _impl->position_velocity_ned();
 }
 
+
+
+    
 Telemetry::GroundTruthHandle Telemetry::subscribe_ground_truth(const GroundTruthCallback& callback)
 {
     return _impl->subscribe_ground_truth(callback);
@@ -382,14 +547,21 @@ void Telemetry::unsubscribe_ground_truth(GroundTruthHandle handle)
 {
     _impl->unsubscribe_ground_truth(handle);
 }
+    
 
-Telemetry::GroundTruth Telemetry::ground_truth() const
+
+
+
+Telemetry::GroundTruth
+Telemetry::ground_truth() const
 {
     return _impl->ground_truth();
 }
 
-Telemetry::FixedwingMetricsHandle
-Telemetry::subscribe_fixedwing_metrics(const FixedwingMetricsCallback& callback)
+
+
+    
+Telemetry::FixedwingMetricsHandle Telemetry::subscribe_fixedwing_metrics(const FixedwingMetricsCallback& callback)
 {
     return _impl->subscribe_fixedwing_metrics(callback);
 }
@@ -398,12 +570,20 @@ void Telemetry::unsubscribe_fixedwing_metrics(FixedwingMetricsHandle handle)
 {
     _impl->unsubscribe_fixedwing_metrics(handle);
 }
+    
 
-Telemetry::FixedwingMetrics Telemetry::fixedwing_metrics() const
+
+
+
+Telemetry::FixedwingMetrics
+Telemetry::fixedwing_metrics() const
 {
     return _impl->fixedwing_metrics();
 }
 
+
+
+    
 Telemetry::ImuHandle Telemetry::subscribe_imu(const ImuCallback& callback)
 {
     return _impl->subscribe_imu(callback);
@@ -413,12 +593,20 @@ void Telemetry::unsubscribe_imu(ImuHandle handle)
 {
     _impl->unsubscribe_imu(handle);
 }
+    
 
-Telemetry::Imu Telemetry::imu() const
+
+
+
+Telemetry::Imu
+Telemetry::imu() const
 {
     return _impl->imu();
 }
 
+
+
+    
 Telemetry::ScaledImuHandle Telemetry::subscribe_scaled_imu(const ScaledImuCallback& callback)
 {
     return _impl->subscribe_scaled_imu(callback);
@@ -428,12 +616,20 @@ void Telemetry::unsubscribe_scaled_imu(ScaledImuHandle handle)
 {
     _impl->unsubscribe_scaled_imu(handle);
 }
+    
 
-Telemetry::Imu Telemetry::scaled_imu() const
+
+
+
+Telemetry::Imu
+Telemetry::scaled_imu() const
 {
     return _impl->scaled_imu();
 }
 
+
+
+    
 Telemetry::RawImuHandle Telemetry::subscribe_raw_imu(const RawImuCallback& callback)
 {
     return _impl->subscribe_raw_imu(callback);
@@ -443,12 +639,20 @@ void Telemetry::unsubscribe_raw_imu(RawImuHandle handle)
 {
     _impl->unsubscribe_raw_imu(handle);
 }
+    
 
-Telemetry::Imu Telemetry::raw_imu() const
+
+
+
+Telemetry::Imu
+Telemetry::raw_imu() const
 {
     return _impl->raw_imu();
 }
 
+
+
+    
 Telemetry::HealthAllOkHandle Telemetry::subscribe_health_all_ok(const HealthAllOkCallback& callback)
 {
     return _impl->subscribe_health_all_ok(callback);
@@ -458,14 +662,21 @@ void Telemetry::unsubscribe_health_all_ok(HealthAllOkHandle handle)
 {
     _impl->unsubscribe_health_all_ok(handle);
 }
+    
 
-bool Telemetry::health_all_ok() const
+
+
+
+bool
+Telemetry::health_all_ok() const
 {
     return _impl->health_all_ok();
 }
 
-Telemetry::UnixEpochTimeHandle
-Telemetry::subscribe_unix_epoch_time(const UnixEpochTimeCallback& callback)
+
+
+    
+Telemetry::UnixEpochTimeHandle Telemetry::subscribe_unix_epoch_time(const UnixEpochTimeCallback& callback)
 {
     return _impl->subscribe_unix_epoch_time(callback);
 }
@@ -474,14 +685,21 @@ void Telemetry::unsubscribe_unix_epoch_time(UnixEpochTimeHandle handle)
 {
     _impl->unsubscribe_unix_epoch_time(handle);
 }
+    
 
-uint64_t Telemetry::unix_epoch_time() const
+
+
+
+uint64_t
+Telemetry::unix_epoch_time() const
 {
     return _impl->unix_epoch_time();
 }
 
-Telemetry::DistanceSensorHandle
-Telemetry::subscribe_distance_sensor(const DistanceSensorCallback& callback)
+
+
+    
+Telemetry::DistanceSensorHandle Telemetry::subscribe_distance_sensor(const DistanceSensorCallback& callback)
 {
     return _impl->subscribe_distance_sensor(callback);
 }
@@ -490,14 +708,21 @@ void Telemetry::unsubscribe_distance_sensor(DistanceSensorHandle handle)
 {
     _impl->unsubscribe_distance_sensor(handle);
 }
+    
 
-Telemetry::DistanceSensor Telemetry::distance_sensor() const
+
+
+
+Telemetry::DistanceSensor
+Telemetry::distance_sensor() const
 {
     return _impl->distance_sensor();
 }
 
-Telemetry::ScaledPressureHandle
-Telemetry::subscribe_scaled_pressure(const ScaledPressureCallback& callback)
+
+
+    
+Telemetry::ScaledPressureHandle Telemetry::subscribe_scaled_pressure(const ScaledPressureCallback& callback)
 {
     return _impl->subscribe_scaled_pressure(callback);
 }
@@ -506,12 +731,20 @@ void Telemetry::unsubscribe_scaled_pressure(ScaledPressureHandle handle)
 {
     _impl->unsubscribe_scaled_pressure(handle);
 }
+    
 
-Telemetry::ScaledPressure Telemetry::scaled_pressure() const
+
+
+
+Telemetry::ScaledPressure
+Telemetry::scaled_pressure() const
 {
     return _impl->scaled_pressure();
 }
 
+
+
+    
 Telemetry::HeadingHandle Telemetry::subscribe_heading(const HeadingCallback& callback)
 {
     return _impl->subscribe_heading(callback);
@@ -521,12 +754,20 @@ void Telemetry::unsubscribe_heading(HeadingHandle handle)
 {
     _impl->unsubscribe_heading(handle);
 }
+    
 
-Telemetry::Heading Telemetry::heading() const
+
+
+
+Telemetry::Heading
+Telemetry::heading() const
 {
     return _impl->heading();
 }
 
+
+
+    
 Telemetry::AltitudeHandle Telemetry::subscribe_altitude(const AltitudeCallback& callback)
 {
     return _impl->subscribe_altitude(callback);
@@ -536,12 +777,20 @@ void Telemetry::unsubscribe_altitude(AltitudeHandle handle)
 {
     _impl->unsubscribe_altitude(handle);
 }
+    
 
-Telemetry::Altitude Telemetry::altitude() const
+
+
+
+Telemetry::Altitude
+Telemetry::altitude() const
 {
     return _impl->altitude();
 }
 
+
+
+    
 Telemetry::WindHandle Telemetry::subscribe_wind(const WindCallback& callback)
 {
     return _impl->subscribe_wind(callback);
@@ -551,289 +800,397 @@ void Telemetry::unsubscribe_wind(WindHandle handle)
 {
     _impl->unsubscribe_wind(handle);
 }
+    
 
-Telemetry::Wind Telemetry::wind() const
+
+
+
+Telemetry::Wind
+Telemetry::wind() const
 {
     return _impl->wind();
 }
+
+
 
 void Telemetry::set_rate_position_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_position_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_position(double rate_hz) const
 {
     return _impl->set_rate_position(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_home_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_home_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_home(double rate_hz) const
 {
     return _impl->set_rate_home(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_in_air_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_in_air_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_in_air(double rate_hz) const
 {
     return _impl->set_rate_in_air(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_landed_state_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_landed_state_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_landed_state(double rate_hz) const
 {
     return _impl->set_rate_landed_state(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_vtol_state_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_vtol_state_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_vtol_state(double rate_hz) const
 {
     return _impl->set_rate_vtol_state(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_attitude_quaternion_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_attitude_quaternion_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_attitude_quaternion(double rate_hz) const
 {
     return _impl->set_rate_attitude_quaternion(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_attitude_euler_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_attitude_euler_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_attitude_euler(double rate_hz) const
 {
     return _impl->set_rate_attitude_euler(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_velocity_ned_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_velocity_ned_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_velocity_ned(double rate_hz) const
 {
     return _impl->set_rate_velocity_ned(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_gps_info_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_gps_info_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_gps_info(double rate_hz) const
 {
     return _impl->set_rate_gps_info(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_raw_gps_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_raw_gps_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_raw_gps(double rate_hz) const
 {
     return _impl->set_rate_raw_gps(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_battery_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_battery_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_battery(double rate_hz) const
 {
     return _impl->set_rate_battery(rate_hz);
 }
+
+
 
 void Telemetry::set_rate_rc_status_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_rc_status_async(rate_hz, callback);
 }
 
+
+
 Telemetry::Result Telemetry::set_rate_rc_status(double rate_hz) const
 {
     return _impl->set_rate_rc_status(rate_hz);
 }
 
-void Telemetry::set_rate_actuator_control_target_async(
-    double rate_hz, const ResultCallback callback)
+
+
+void Telemetry::set_rate_actuator_control_target_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_actuator_control_target_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_actuator_control_target(double rate_hz) const
 {
     return _impl->set_rate_actuator_control_target(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_actuator_output_status_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_actuator_output_status_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_actuator_output_status(double rate_hz) const
 {
     return _impl->set_rate_actuator_output_status(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_odometry_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_odometry_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_odometry(double rate_hz) const
 {
     return _impl->set_rate_odometry(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_position_velocity_ned_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_position_velocity_ned_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_position_velocity_ned(double rate_hz) const
 {
     return _impl->set_rate_position_velocity_ned(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_ground_truth_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_ground_truth_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_ground_truth(double rate_hz) const
 {
     return _impl->set_rate_ground_truth(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_fixedwing_metrics_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_fixedwing_metrics_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_fixedwing_metrics(double rate_hz) const
 {
     return _impl->set_rate_fixedwing_metrics(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_imu_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_imu_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_imu(double rate_hz) const
 {
     return _impl->set_rate_imu(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_scaled_imu_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_scaled_imu_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_scaled_imu(double rate_hz) const
 {
     return _impl->set_rate_scaled_imu(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_raw_imu_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_raw_imu_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_raw_imu(double rate_hz) const
 {
     return _impl->set_rate_raw_imu(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_unix_epoch_time_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_unix_epoch_time_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_unix_epoch_time(double rate_hz) const
 {
     return _impl->set_rate_unix_epoch_time(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_distance_sensor_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_distance_sensor_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_distance_sensor(double rate_hz) const
 {
     return _impl->set_rate_distance_sensor(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_altitude_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_altitude_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_altitude(double rate_hz) const
 {
     return _impl->set_rate_altitude(rate_hz);
 }
 
+
+
 void Telemetry::set_rate_health_async(double rate_hz, const ResultCallback callback)
 {
     _impl->set_rate_health_async(rate_hz, callback);
 }
+
+
 
 Telemetry::Result Telemetry::set_rate_health(double rate_hz) const
 {
     return _impl->set_rate_health(rate_hz);
 }
 
+
+
 void Telemetry::get_gps_global_origin_async(const GetGpsGlobalOriginCallback callback)
 {
     _impl->get_gps_global_origin_async(callback);
 }
+
+
 
 std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> Telemetry::get_gps_global_origin() const
 {
     return _impl->get_gps_global_origin();
 }
 
+
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Position& lhs, const Telemetry::Position& rhs)
 {
-    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            rhs.latitude_deg == lhs.latitude_deg) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            rhs.longitude_deg == lhs.longitude_deg) &&
-           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
-           ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) ||
-            rhs.relative_altitude_m == lhs.relative_altitude_m);
+    return
+        ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) || rhs.latitude_deg == lhs.latitude_deg) &&
+        ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) || rhs.longitude_deg == lhs.longitude_deg) &&
+        ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) || rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+        ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) || rhs.relative_altitude_m == lhs.relative_altitude_m);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position)
 {
     str << std::setprecision(15);
-    str << "position:" << '\n' << "{\n";
+    str << "position:" << '\n'
+        << "{\n";
     str << "    latitude_deg: " << position.latitude_deg << '\n';
     str << "    longitude_deg: " << position.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << position.absolute_altitude_m << '\n';
@@ -842,35 +1199,39 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Position co
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Heading& lhs, const Telemetry::Heading& rhs)
 {
-    return (
-        (std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
-        rhs.heading_deg == lhs.heading_deg);
+    return
+        ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) || rhs.heading_deg == lhs.heading_deg);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Heading const& heading)
 {
     str << std::setprecision(15);
-    str << "heading:" << '\n' << "{\n";
+    str << "heading:" << '\n'
+        << "{\n";
     str << "    heading_deg: " << heading.heading_deg << '\n';
     str << '}';
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Quaternion& lhs, const Telemetry::Quaternion& rhs)
 {
-    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
-           ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
-           ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
-           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z) &&
-           (rhs.timestamp_us == lhs.timestamp_us);
+    return
+        ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
+        ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
+        ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
+        ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z) &&
+        (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion)
 {
     str << std::setprecision(15);
-    str << "quaternion:" << '\n' << "{\n";
+    str << "quaternion:" << '\n'
+        << "{\n";
     str << "    w: " << quaternion.w << '\n';
     str << "    x: " << quaternion.x << '\n';
     str << "    y: " << quaternion.y << '\n';
@@ -880,38 +1241,29 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion 
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::HomePosition& lhs, const Telemetry::HomePosition& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::HomePosition& lhs, const Telemetry::HomePosition& rhs)
 {
-    return (rhs.timestamp_us == lhs.timestamp_us) &&
-           ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            rhs.latitude_deg == lhs.latitude_deg) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            rhs.longitude_deg == lhs.longitude_deg) &&
-           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
-           ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) ||
-            rhs.relative_altitude_m == lhs.relative_altitude_m) &&
-           ((std::isnan(rhs.local_north_m) && std::isnan(lhs.local_north_m)) ||
-            rhs.local_north_m == lhs.local_north_m) &&
-           ((std::isnan(rhs.local_east_m) && std::isnan(lhs.local_east_m)) ||
-            rhs.local_east_m == lhs.local_east_m) &&
-           ((std::isnan(rhs.local_down_m) && std::isnan(lhs.local_down_m)) ||
-            rhs.local_down_m == lhs.local_down_m) &&
-           (rhs.q == lhs.q) &&
-           ((std::isnan(rhs.approach_north_m) && std::isnan(lhs.approach_north_m)) ||
-            rhs.approach_north_m == lhs.approach_north_m) &&
-           ((std::isnan(rhs.approach_east_m) && std::isnan(lhs.approach_east_m)) ||
-            rhs.approach_east_m == lhs.approach_east_m) &&
-           ((std::isnan(rhs.approach_down_m) && std::isnan(lhs.approach_down_m)) ||
-            rhs.approach_down_m == lhs.approach_down_m);
+    return
+        (rhs.timestamp_us == lhs.timestamp_us) &&
+        ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) || rhs.latitude_deg == lhs.latitude_deg) &&
+        ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) || rhs.longitude_deg == lhs.longitude_deg) &&
+        ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) || rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+        ((std::isnan(rhs.relative_altitude_m) && std::isnan(lhs.relative_altitude_m)) || rhs.relative_altitude_m == lhs.relative_altitude_m) &&
+        ((std::isnan(rhs.local_north_m) && std::isnan(lhs.local_north_m)) || rhs.local_north_m == lhs.local_north_m) &&
+        ((std::isnan(rhs.local_east_m) && std::isnan(lhs.local_east_m)) || rhs.local_east_m == lhs.local_east_m) &&
+        ((std::isnan(rhs.local_down_m) && std::isnan(lhs.local_down_m)) || rhs.local_down_m == lhs.local_down_m) &&
+        (rhs.q == lhs.q) &&
+        ((std::isnan(rhs.approach_north_m) && std::isnan(lhs.approach_north_m)) || rhs.approach_north_m == lhs.approach_north_m) &&
+        ((std::isnan(rhs.approach_east_m) && std::isnan(lhs.approach_east_m)) || rhs.approach_east_m == lhs.approach_east_m) &&
+        ((std::isnan(rhs.approach_down_m) && std::isnan(lhs.approach_down_m)) || rhs.approach_down_m == lhs.approach_down_m);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::HomePosition const& home_position)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::HomePosition const& home_position)
 {
     str << std::setprecision(15);
-    str << "home_position:" << '\n' << "{\n";
+    str << "home_position:" << '\n'
+        << "{\n";
     str << "    timestamp_us: " << home_position.timestamp_us << '\n';
     str << "    latitude_deg: " << home_position.latitude_deg << '\n';
     str << "    longitude_deg: " << home_position.longitude_deg << '\n';
@@ -928,20 +1280,21 @@ operator<<(std::ostream& str, Telemetry::HomePosition const& home_position)
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::EulerAngle& lhs, const Telemetry::EulerAngle& rhs)
 {
-    return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
-            rhs.roll_deg == lhs.roll_deg) &&
-           ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) ||
-            rhs.pitch_deg == lhs.pitch_deg) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg) &&
-           (rhs.timestamp_us == lhs.timestamp_us);
+    return
+        ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) || rhs.roll_deg == lhs.roll_deg) &&
+        ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) || rhs.pitch_deg == lhs.pitch_deg) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg) &&
+        (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle)
 {
     str << std::setprecision(15);
-    str << "euler_angle:" << '\n' << "{\n";
+    str << "euler_angle:" << '\n'
+        << "{\n";
     str << "    roll_deg: " << euler_angle.roll_deg << '\n';
     str << "    pitch_deg: " << euler_angle.pitch_deg << '\n';
     str << "    yaw_deg: " << euler_angle.yaw_deg << '\n';
@@ -950,22 +1303,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle 
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs)
 {
-    return ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) ||
-            rhs.roll_rad_s == lhs.roll_rad_s) &&
-           ((std::isnan(rhs.pitch_rad_s) && std::isnan(lhs.pitch_rad_s)) ||
-            rhs.pitch_rad_s == lhs.pitch_rad_s) &&
-           ((std::isnan(rhs.yaw_rad_s) && std::isnan(lhs.yaw_rad_s)) ||
-            rhs.yaw_rad_s == lhs.yaw_rad_s);
+    return
+        ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) || rhs.roll_rad_s == lhs.roll_rad_s) &&
+        ((std::isnan(rhs.pitch_rad_s) && std::isnan(lhs.pitch_rad_s)) || rhs.pitch_rad_s == lhs.pitch_rad_s) &&
+        ((std::isnan(rhs.yaw_rad_s) && std::isnan(lhs.yaw_rad_s)) || rhs.yaw_rad_s == lhs.yaw_rad_s);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body)
 {
     str << std::setprecision(15);
-    str << "angular_velocity_body:" << '\n' << "{\n";
+    str << "angular_velocity_body:" << '\n'
+        << "{\n";
     str << "    roll_rad_s: " << angular_velocity_body.roll_rad_s << '\n';
     str << "    pitch_rad_s: " << angular_velocity_body.pitch_rad_s << '\n';
     str << "    yaw_rad_s: " << angular_velocity_body.yaw_rad_s << '\n';
@@ -973,54 +1324,50 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velo
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::GpsInfo& lhs, const Telemetry::GpsInfo& rhs)
 {
-    return (rhs.num_satellites == lhs.num_satellites) && (rhs.fix_type == lhs.fix_type);
+    return
+        (rhs.num_satellites == lhs.num_satellites) &&
+        (rhs.fix_type == lhs.fix_type);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::GpsInfo const& gps_info)
 {
     str << std::setprecision(15);
-    str << "gps_info:" << '\n' << "{\n";
+    str << "gps_info:" << '\n'
+        << "{\n";
     str << "    num_satellites: " << gps_info.num_satellites << '\n';
     str << "    fix_type: " << gps_info.fix_type << '\n';
     str << '}';
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::RawGps& lhs, const Telemetry::RawGps& rhs)
 {
-    return (rhs.timestamp_us == lhs.timestamp_us) &&
-           ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            rhs.latitude_deg == lhs.latitude_deg) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            rhs.longitude_deg == lhs.longitude_deg) &&
-           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
-           ((std::isnan(rhs.hdop) && std::isnan(lhs.hdop)) || rhs.hdop == lhs.hdop) &&
-           ((std::isnan(rhs.vdop) && std::isnan(lhs.vdop)) || rhs.vdop == lhs.vdop) &&
-           ((std::isnan(rhs.velocity_m_s) && std::isnan(lhs.velocity_m_s)) ||
-            rhs.velocity_m_s == lhs.velocity_m_s) &&
-           ((std::isnan(rhs.cog_deg) && std::isnan(lhs.cog_deg)) || rhs.cog_deg == lhs.cog_deg) &&
-           ((std::isnan(rhs.altitude_ellipsoid_m) && std::isnan(lhs.altitude_ellipsoid_m)) ||
-            rhs.altitude_ellipsoid_m == lhs.altitude_ellipsoid_m) &&
-           ((std::isnan(rhs.horizontal_uncertainty_m) &&
-             std::isnan(lhs.horizontal_uncertainty_m)) ||
-            rhs.horizontal_uncertainty_m == lhs.horizontal_uncertainty_m) &&
-           ((std::isnan(rhs.vertical_uncertainty_m) && std::isnan(lhs.vertical_uncertainty_m)) ||
-            rhs.vertical_uncertainty_m == lhs.vertical_uncertainty_m) &&
-           ((std::isnan(rhs.velocity_uncertainty_m_s) &&
-             std::isnan(lhs.velocity_uncertainty_m_s)) ||
-            rhs.velocity_uncertainty_m_s == lhs.velocity_uncertainty_m_s) &&
-           ((std::isnan(rhs.heading_uncertainty_deg) && std::isnan(lhs.heading_uncertainty_deg)) ||
-            rhs.heading_uncertainty_deg == lhs.heading_uncertainty_deg) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+    return
+        (rhs.timestamp_us == lhs.timestamp_us) &&
+        ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) || rhs.latitude_deg == lhs.latitude_deg) &&
+        ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) || rhs.longitude_deg == lhs.longitude_deg) &&
+        ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) || rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+        ((std::isnan(rhs.hdop) && std::isnan(lhs.hdop)) || rhs.hdop == lhs.hdop) &&
+        ((std::isnan(rhs.vdop) && std::isnan(lhs.vdop)) || rhs.vdop == lhs.vdop) &&
+        ((std::isnan(rhs.velocity_m_s) && std::isnan(lhs.velocity_m_s)) || rhs.velocity_m_s == lhs.velocity_m_s) &&
+        ((std::isnan(rhs.cog_deg) && std::isnan(lhs.cog_deg)) || rhs.cog_deg == lhs.cog_deg) &&
+        ((std::isnan(rhs.altitude_ellipsoid_m) && std::isnan(lhs.altitude_ellipsoid_m)) || rhs.altitude_ellipsoid_m == lhs.altitude_ellipsoid_m) &&
+        ((std::isnan(rhs.horizontal_uncertainty_m) && std::isnan(lhs.horizontal_uncertainty_m)) || rhs.horizontal_uncertainty_m == lhs.horizontal_uncertainty_m) &&
+        ((std::isnan(rhs.vertical_uncertainty_m) && std::isnan(lhs.vertical_uncertainty_m)) || rhs.vertical_uncertainty_m == lhs.vertical_uncertainty_m) &&
+        ((std::isnan(rhs.velocity_uncertainty_m_s) && std::isnan(lhs.velocity_uncertainty_m_s)) || rhs.velocity_uncertainty_m_s == lhs.velocity_uncertainty_m_s) &&
+        ((std::isnan(rhs.heading_uncertainty_deg) && std::isnan(lhs.heading_uncertainty_deg)) || rhs.heading_uncertainty_deg == lhs.heading_uncertainty_deg) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::RawGps const& raw_gps)
 {
     str << std::setprecision(15);
-    str << "raw_gps:" << '\n' << "{\n";
+    str << "raw_gps:" << '\n'
+        << "{\n";
     str << "    timestamp_us: " << raw_gps.timestamp_us << '\n';
     str << "    latitude_deg: " << raw_gps.latitude_deg << '\n';
     str << "    longitude_deg: " << raw_gps.longitude_deg << '\n';
@@ -1039,28 +1386,25 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::RawGps cons
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
 {
-    return (rhs.id == lhs.id) &&
-           ((std::isnan(rhs.temperature_degc) && std::isnan(lhs.temperature_degc)) ||
-            rhs.temperature_degc == lhs.temperature_degc) &&
-           ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
-            rhs.voltage_v == lhs.voltage_v) &&
-           ((std::isnan(rhs.current_battery_a) && std::isnan(lhs.current_battery_a)) ||
-            rhs.current_battery_a == lhs.current_battery_a) &&
-           ((std::isnan(rhs.capacity_consumed_ah) && std::isnan(lhs.capacity_consumed_ah)) ||
-            rhs.capacity_consumed_ah == lhs.capacity_consumed_ah) &&
-           ((std::isnan(rhs.remaining_percent) && std::isnan(lhs.remaining_percent)) ||
-            rhs.remaining_percent == lhs.remaining_percent) &&
-           ((std::isnan(rhs.time_remaining_s) && std::isnan(lhs.time_remaining_s)) ||
-            rhs.time_remaining_s == lhs.time_remaining_s) &&
-           (rhs.battery_function == lhs.battery_function);
+    return
+        (rhs.id == lhs.id) &&
+        ((std::isnan(rhs.temperature_degc) && std::isnan(lhs.temperature_degc)) || rhs.temperature_degc == lhs.temperature_degc) &&
+        ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) || rhs.voltage_v == lhs.voltage_v) &&
+        ((std::isnan(rhs.current_battery_a) && std::isnan(lhs.current_battery_a)) || rhs.current_battery_a == lhs.current_battery_a) &&
+        ((std::isnan(rhs.capacity_consumed_ah) && std::isnan(lhs.capacity_consumed_ah)) || rhs.capacity_consumed_ah == lhs.capacity_consumed_ah) &&
+        ((std::isnan(rhs.remaining_percent) && std::isnan(lhs.remaining_percent)) || rhs.remaining_percent == lhs.remaining_percent) &&
+        ((std::isnan(rhs.time_remaining_s) && std::isnan(lhs.time_remaining_s)) || rhs.time_remaining_s == lhs.time_remaining_s) &&
+        (rhs.battery_function == lhs.battery_function);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
 {
     str << std::setprecision(15);
-    str << "battery:" << '\n' << "{\n";
+    str << "battery:" << '\n'
+        << "{\n";
     str << "    id: " << battery.id << '\n';
     str << "    temperature_degc: " << battery.temperature_degc << '\n';
     str << "    voltage_v: " << battery.voltage_v << '\n';
@@ -1073,24 +1417,26 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Battery con
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Health& lhs, const Telemetry::Health& rhs)
 {
-    return (rhs.is_gyrometer_calibration_ok == lhs.is_gyrometer_calibration_ok) &&
-           (rhs.is_accelerometer_calibration_ok == lhs.is_accelerometer_calibration_ok) &&
-           (rhs.is_magnetometer_calibration_ok == lhs.is_magnetometer_calibration_ok) &&
-           (rhs.is_local_position_ok == lhs.is_local_position_ok) &&
-           (rhs.is_global_position_ok == lhs.is_global_position_ok) &&
-           (rhs.is_home_position_ok == lhs.is_home_position_ok) &&
-           (rhs.is_armable == lhs.is_armable);
+    return
+        (rhs.is_gyrometer_calibration_ok == lhs.is_gyrometer_calibration_ok) &&
+        (rhs.is_accelerometer_calibration_ok == lhs.is_accelerometer_calibration_ok) &&
+        (rhs.is_magnetometer_calibration_ok == lhs.is_magnetometer_calibration_ok) &&
+        (rhs.is_local_position_ok == lhs.is_local_position_ok) &&
+        (rhs.is_global_position_ok == lhs.is_global_position_ok) &&
+        (rhs.is_home_position_ok == lhs.is_home_position_ok) &&
+        (rhs.is_armable == lhs.is_armable);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health)
 {
     str << std::setprecision(15);
-    str << "health:" << '\n' << "{\n";
+    str << "health:" << '\n'
+        << "{\n";
     str << "    is_gyrometer_calibration_ok: " << health.is_gyrometer_calibration_ok << '\n';
-    str << "    is_accelerometer_calibration_ok: " << health.is_accelerometer_calibration_ok
-        << '\n';
+    str << "    is_accelerometer_calibration_ok: " << health.is_accelerometer_calibration_ok << '\n';
     str << "    is_magnetometer_calibration_ok: " << health.is_magnetometer_calibration_ok << '\n';
     str << "    is_local_position_ok: " << health.is_local_position_ok << '\n';
     str << "    is_global_position_ok: " << health.is_global_position_ok << '\n';
@@ -1100,18 +1446,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Health cons
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::RcStatus& lhs, const Telemetry::RcStatus& rhs)
 {
-    return (rhs.was_available_once == lhs.was_available_once) &&
-           (rhs.is_available == lhs.is_available) &&
-           ((std::isnan(rhs.signal_strength_percent) && std::isnan(lhs.signal_strength_percent)) ||
-            rhs.signal_strength_percent == lhs.signal_strength_percent);
+    return
+        (rhs.was_available_once == lhs.was_available_once) &&
+        (rhs.is_available == lhs.is_available) &&
+        ((std::isnan(rhs.signal_strength_percent) && std::isnan(lhs.signal_strength_percent)) || rhs.signal_strength_percent == lhs.signal_strength_percent);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::RcStatus const& rc_status)
 {
     str << std::setprecision(15);
-    str << "rc_status:" << '\n' << "{\n";
+    str << "rc_status:" << '\n'
+        << "{\n";
     str << "    was_available_once: " << rc_status.was_available_once << '\n';
     str << "    is_available: " << rc_status.is_available << '\n';
     str << "    signal_strength_percent: " << rc_status.signal_strength_percent << '\n';
@@ -1119,37 +1467,41 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::RcStatus co
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::StatusText& lhs, const Telemetry::StatusText& rhs)
 {
-    return (rhs.type == lhs.type) && (rhs.text == lhs.text);
+    return
+        (rhs.type == lhs.type) &&
+        (rhs.text == lhs.text);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text)
 {
     str << std::setprecision(15);
-    str << "status_text:" << '\n' << "{\n";
+    str << "status_text:" << '\n'
+        << "{\n";
     str << "    type: " << status_text.type << '\n';
     str << "    text: " << status_text.text << '\n';
     str << '}';
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::ActuatorControlTarget& lhs, const Telemetry::ActuatorControlTarget& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::ActuatorControlTarget& lhs, const Telemetry::ActuatorControlTarget& rhs)
 {
-    return (rhs.group == lhs.group) && (rhs.controls == lhs.controls);
+    return
+        (rhs.group == lhs.group) &&
+        (rhs.controls == lhs.controls);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_control_target)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_control_target)
 {
     str << std::setprecision(15);
-    str << "actuator_control_target:" << '\n' << "{\n";
+    str << "actuator_control_target:" << '\n'
+        << "{\n";
     str << "    group: " << actuator_control_target.group << '\n';
     str << "    controls: [";
-    for (auto it = actuator_control_target.controls.begin();
-         it != actuator_control_target.controls.end();
-         ++it) {
+    for (auto it = actuator_control_target.controls.begin(); it != actuator_control_target.controls.end(); ++it) {
         str << *it;
         str << (it + 1 != actuator_control_target.controls.end() ? ", " : "]\n");
     }
@@ -1157,22 +1509,22 @@ operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_c
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::ActuatorOutputStatus& lhs, const Telemetry::ActuatorOutputStatus& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::ActuatorOutputStatus& lhs, const Telemetry::ActuatorOutputStatus& rhs)
 {
-    return (rhs.active == lhs.active) && (rhs.actuator == lhs.actuator);
+    return
+        (rhs.active == lhs.active) &&
+        (rhs.actuator == lhs.actuator);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status)
 {
     str << std::setprecision(15);
-    str << "actuator_output_status:" << '\n' << "{\n";
+    str << "actuator_output_status:" << '\n'
+        << "{\n";
     str << "    active: " << actuator_output_status.active << '\n';
     str << "    actuator: [";
-    for (auto it = actuator_output_status.actuator.begin();
-         it != actuator_output_status.actuator.end();
-         ++it) {
+    for (auto it = actuator_output_status.actuator.begin(); it != actuator_output_status.actuator.end(); ++it) {
         str << *it;
         str << (it + 1 != actuator_output_status.actuator.end() ? ", " : "]\n");
     }
@@ -1180,18 +1532,20 @@ operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_ou
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Covariance& lhs, const Telemetry::Covariance& rhs)
 {
-    return (rhs.covariance_matrix == lhs.covariance_matrix);
+    return
+        (rhs.covariance_matrix == lhs.covariance_matrix);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Covariance const& covariance)
 {
     str << std::setprecision(15);
-    str << "covariance:" << '\n' << "{\n";
+    str << "covariance:" << '\n'
+        << "{\n";
     str << "    covariance_matrix: [";
-    for (auto it = covariance.covariance_matrix.begin(); it != covariance.covariance_matrix.end();
-         ++it) {
+    for (auto it = covariance.covariance_matrix.begin(); it != covariance.covariance_matrix.end(); ++it) {
         str << *it;
         str << (it + 1 != covariance.covariance_matrix.end() ? ", " : "]\n");
     }
@@ -1199,19 +1553,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Covariance 
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::VelocityBody& lhs, const Telemetry::VelocityBody& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::VelocityBody& lhs, const Telemetry::VelocityBody& rhs)
 {
-    return ((std::isnan(rhs.x_m_s) && std::isnan(lhs.x_m_s)) || rhs.x_m_s == lhs.x_m_s) &&
-           ((std::isnan(rhs.y_m_s) && std::isnan(lhs.y_m_s)) || rhs.y_m_s == lhs.y_m_s) &&
-           ((std::isnan(rhs.z_m_s) && std::isnan(lhs.z_m_s)) || rhs.z_m_s == lhs.z_m_s);
+    return
+        ((std::isnan(rhs.x_m_s) && std::isnan(lhs.x_m_s)) || rhs.x_m_s == lhs.x_m_s) &&
+        ((std::isnan(rhs.y_m_s) && std::isnan(lhs.y_m_s)) || rhs.y_m_s == lhs.y_m_s) &&
+        ((std::isnan(rhs.z_m_s) && std::isnan(lhs.z_m_s)) || rhs.z_m_s == lhs.z_m_s);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::VelocityBody const& velocity_body)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::VelocityBody const& velocity_body)
 {
     str << std::setprecision(15);
-    str << "velocity_body:" << '\n' << "{\n";
+    str << "velocity_body:" << '\n'
+        << "{\n";
     str << "    x_m_s: " << velocity_body.x_m_s << '\n';
     str << "    y_m_s: " << velocity_body.y_m_s << '\n';
     str << "    z_m_s: " << velocity_body.z_m_s << '\n';
@@ -1219,25 +1574,28 @@ operator<<(std::ostream& str, Telemetry::VelocityBody const& velocity_body)
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::PositionBody& lhs, const Telemetry::PositionBody& rhs)
 {
-    return ((std::isnan(rhs.x_m) && std::isnan(lhs.x_m)) || rhs.x_m == lhs.x_m) &&
-           ((std::isnan(rhs.y_m) && std::isnan(lhs.y_m)) || rhs.y_m == lhs.y_m) &&
-           ((std::isnan(rhs.z_m) && std::isnan(lhs.z_m)) || rhs.z_m == lhs.z_m);
+    return
+        ((std::isnan(rhs.x_m) && std::isnan(lhs.x_m)) || rhs.x_m == lhs.x_m) &&
+        ((std::isnan(rhs.y_m) && std::isnan(lhs.y_m)) || rhs.y_m == lhs.y_m) &&
+        ((std::isnan(rhs.z_m) && std::isnan(lhs.z_m)) || rhs.z_m == lhs.z_m);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::PositionBody const& position_body)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body)
 {
     str << std::setprecision(15);
-    str << "position_body:" << '\n' << "{\n";
+    str << "position_body:" << '\n'
+        << "{\n";
     str << "    x_m: " << position_body.x_m << '\n';
     str << "    y_m: " << position_body.y_m << '\n';
     str << "    z_m: " << position_body.z_m << '\n';
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Telemetry::Odometry::MavFrame const& mav_frame)
 {
@@ -1255,25 +1613,29 @@ MAVSDK_PUBLIC std::string_view to_string(Telemetry::Odometry::MavFrame const& ma
     }
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::Odometry::MavFrame const& mav_frame)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Odometry::MavFrame const& mav_frame)
 {
     return str << to_string(mav_frame);
 }
 MAVSDK_PUBLIC bool operator==(const Telemetry::Odometry& lhs, const Telemetry::Odometry& rhs)
 {
-    return (rhs.time_usec == lhs.time_usec) && (rhs.frame_id == lhs.frame_id) &&
-           (rhs.child_frame_id == lhs.child_frame_id) && (rhs.position_body == lhs.position_body) &&
-           (rhs.q == lhs.q) && (rhs.velocity_body == lhs.velocity_body) &&
-           (rhs.angular_velocity_body == lhs.angular_velocity_body) &&
-           (rhs.pose_covariance == lhs.pose_covariance) &&
-           (rhs.velocity_covariance == lhs.velocity_covariance);
+    return
+        (rhs.time_usec == lhs.time_usec) &&
+        (rhs.frame_id == lhs.frame_id) &&
+        (rhs.child_frame_id == lhs.child_frame_id) &&
+        (rhs.position_body == lhs.position_body) &&
+        (rhs.q == lhs.q) &&
+        (rhs.velocity_body == lhs.velocity_body) &&
+        (rhs.angular_velocity_body == lhs.angular_velocity_body) &&
+        (rhs.pose_covariance == lhs.pose_covariance) &&
+        (rhs.velocity_covariance == lhs.velocity_covariance);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry)
 {
     str << std::setprecision(15);
-    str << "odometry:" << '\n' << "{\n";
+    str << "odometry:" << '\n'
+        << "{\n";
     str << "    time_usec: " << odometry.time_usec << '\n';
     str << "    frame_id: " << odometry.frame_id << '\n';
     str << "    child_frame_id: " << odometry.child_frame_id << '\n';
@@ -1287,23 +1649,21 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Odometry co
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::DistanceSensor& lhs, const Telemetry::DistanceSensor& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::DistanceSensor& lhs, const Telemetry::DistanceSensor& rhs)
 {
-    return ((std::isnan(rhs.minimum_distance_m) && std::isnan(lhs.minimum_distance_m)) ||
-            rhs.minimum_distance_m == lhs.minimum_distance_m) &&
-           ((std::isnan(rhs.maximum_distance_m) && std::isnan(lhs.maximum_distance_m)) ||
-            rhs.maximum_distance_m == lhs.maximum_distance_m) &&
-           ((std::isnan(rhs.current_distance_m) && std::isnan(lhs.current_distance_m)) ||
-            rhs.current_distance_m == lhs.current_distance_m) &&
-           (rhs.orientation == lhs.orientation);
+    return
+        ((std::isnan(rhs.minimum_distance_m) && std::isnan(lhs.minimum_distance_m)) || rhs.minimum_distance_m == lhs.minimum_distance_m) &&
+        ((std::isnan(rhs.maximum_distance_m) && std::isnan(lhs.maximum_distance_m)) || rhs.maximum_distance_m == lhs.maximum_distance_m) &&
+        ((std::isnan(rhs.current_distance_m) && std::isnan(lhs.current_distance_m)) || rhs.current_distance_m == lhs.current_distance_m) &&
+        (rhs.orientation == lhs.orientation);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor)
 {
     str << std::setprecision(15);
-    str << "distance_sensor:" << '\n' << "{\n";
+    str << "distance_sensor:" << '\n'
+        << "{\n";
     str << "    minimum_distance_m: " << distance_sensor.minimum_distance_m << '\n';
     str << "    maximum_distance_m: " << distance_sensor.maximum_distance_m << '\n';
     str << "    current_distance_m: " << distance_sensor.current_distance_m << '\n';
@@ -1312,49 +1672,45 @@ operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor)
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::ScaledPressure& lhs, const Telemetry::ScaledPressure& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::ScaledPressure& lhs, const Telemetry::ScaledPressure& rhs)
 {
-    return (rhs.timestamp_us == lhs.timestamp_us) &&
-           ((std::isnan(rhs.absolute_pressure_hpa) && std::isnan(lhs.absolute_pressure_hpa)) ||
-            rhs.absolute_pressure_hpa == lhs.absolute_pressure_hpa) &&
-           ((std::isnan(rhs.differential_pressure_hpa) &&
-             std::isnan(lhs.differential_pressure_hpa)) ||
-            rhs.differential_pressure_hpa == lhs.differential_pressure_hpa) &&
-           ((std::isnan(rhs.temperature_deg) && std::isnan(lhs.temperature_deg)) ||
-            rhs.temperature_deg == lhs.temperature_deg) &&
-           ((std::isnan(rhs.differential_pressure_temperature_deg) &&
-             std::isnan(lhs.differential_pressure_temperature_deg)) ||
-            rhs.differential_pressure_temperature_deg == lhs.differential_pressure_temperature_deg);
+    return
+        (rhs.timestamp_us == lhs.timestamp_us) &&
+        ((std::isnan(rhs.absolute_pressure_hpa) && std::isnan(lhs.absolute_pressure_hpa)) || rhs.absolute_pressure_hpa == lhs.absolute_pressure_hpa) &&
+        ((std::isnan(rhs.differential_pressure_hpa) && std::isnan(lhs.differential_pressure_hpa)) || rhs.differential_pressure_hpa == lhs.differential_pressure_hpa) &&
+        ((std::isnan(rhs.temperature_deg) && std::isnan(lhs.temperature_deg)) || rhs.temperature_deg == lhs.temperature_deg) &&
+        ((std::isnan(rhs.differential_pressure_temperature_deg) && std::isnan(lhs.differential_pressure_temperature_deg)) || rhs.differential_pressure_temperature_deg == lhs.differential_pressure_temperature_deg);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::ScaledPressure const& scaled_pressure)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::ScaledPressure const& scaled_pressure)
 {
     str << std::setprecision(15);
-    str << "scaled_pressure:" << '\n' << "{\n";
+    str << "scaled_pressure:" << '\n'
+        << "{\n";
     str << "    timestamp_us: " << scaled_pressure.timestamp_us << '\n';
     str << "    absolute_pressure_hpa: " << scaled_pressure.absolute_pressure_hpa << '\n';
     str << "    differential_pressure_hpa: " << scaled_pressure.differential_pressure_hpa << '\n';
     str << "    temperature_deg: " << scaled_pressure.temperature_deg << '\n';
-    str << "    differential_pressure_temperature_deg: "
-        << scaled_pressure.differential_pressure_temperature_deg << '\n';
+    str << "    differential_pressure_temperature_deg: " << scaled_pressure.differential_pressure_temperature_deg << '\n';
     str << '}';
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::PositionNed& lhs, const Telemetry::PositionNed& rhs)
 {
-    return ((std::isnan(rhs.north_m) && std::isnan(lhs.north_m)) || rhs.north_m == lhs.north_m) &&
-           ((std::isnan(rhs.east_m) && std::isnan(lhs.east_m)) || rhs.east_m == lhs.east_m) &&
-           ((std::isnan(rhs.down_m) && std::isnan(lhs.down_m)) || rhs.down_m == lhs.down_m);
+    return
+        ((std::isnan(rhs.north_m) && std::isnan(lhs.north_m)) || rhs.north_m == lhs.north_m) &&
+        ((std::isnan(rhs.east_m) && std::isnan(lhs.east_m)) || rhs.east_m == lhs.east_m) &&
+        ((std::isnan(rhs.down_m) && std::isnan(lhs.down_m)) || rhs.down_m == lhs.down_m);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::PositionNed const& position_ned)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::PositionNed const& position_ned)
 {
     str << std::setprecision(15);
-    str << "position_ned:" << '\n' << "{\n";
+    str << "position_ned:" << '\n'
+        << "{\n";
     str << "    north_m: " << position_ned.north_m << '\n';
     str << "    east_m: " << position_ned.east_m << '\n';
     str << "    down_m: " << position_ned.down_m << '\n';
@@ -1362,20 +1718,20 @@ operator<<(std::ostream& str, Telemetry::PositionNed const& position_ned)
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::VelocityNed& lhs, const Telemetry::VelocityNed& rhs)
 {
-    return ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) ||
-            rhs.north_m_s == lhs.north_m_s) &&
-           ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) ||
-            rhs.east_m_s == lhs.east_m_s) &&
-           ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s);
+    return
+        ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) || rhs.north_m_s == lhs.north_m_s) &&
+        ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) || rhs.east_m_s == lhs.east_m_s) &&
+        ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::VelocityNed const& velocity_ned)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::VelocityNed const& velocity_ned)
 {
     str << std::setprecision(15);
-    str << "velocity_ned:" << '\n' << "{\n";
+    str << "velocity_ned:" << '\n'
+        << "{\n";
     str << "    north_m_s: " << velocity_ned.north_m_s << '\n';
     str << "    east_m_s: " << velocity_ned.east_m_s << '\n';
     str << "    down_m_s: " << velocity_ned.down_m_s << '\n';
@@ -1383,39 +1739,40 @@ operator<<(std::ostream& str, Telemetry::VelocityNed const& velocity_ned)
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::PositionVelocityNed& lhs, const Telemetry::PositionVelocityNed& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::PositionVelocityNed& lhs, const Telemetry::PositionVelocityNed& rhs)
 {
-    return (rhs.position == lhs.position) && (rhs.velocity == lhs.velocity);
+    return
+        (rhs.position == lhs.position) &&
+        (rhs.velocity == lhs.velocity);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::PositionVelocityNed const& position_velocity_ned)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::PositionVelocityNed const& position_velocity_ned)
 {
     str << std::setprecision(15);
-    str << "position_velocity_ned:" << '\n' << "{\n";
+    str << "position_velocity_ned:" << '\n'
+        << "{\n";
     str << "    position: " << position_velocity_ned.position << '\n';
     str << "    velocity: " << position_velocity_ned.velocity << '\n';
     str << '}';
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::GroundTruth& lhs, const Telemetry::GroundTruth& rhs)
 {
-    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            rhs.latitude_deg == lhs.latitude_deg) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            rhs.longitude_deg == lhs.longitude_deg) &&
-           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
-           (rhs.timestamp_us == lhs.timestamp_us);
+    return
+        ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) || rhs.latitude_deg == lhs.latitude_deg) &&
+        ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) || rhs.longitude_deg == lhs.longitude_deg) &&
+        ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) || rhs.absolute_altitude_m == lhs.absolute_altitude_m) &&
+        (rhs.timestamp_us == lhs.timestamp_us);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth)
 {
     str << std::setprecision(15);
-    str << "ground_truth:" << '\n' << "{\n";
+    str << "ground_truth:" << '\n'
+        << "{\n";
     str << "    latitude_deg: " << ground_truth.latitude_deg << '\n';
     str << "    longitude_deg: " << ground_truth.longitude_deg << '\n';
     str << "    absolute_altitude_m: " << ground_truth.absolute_altitude_m << '\n';
@@ -1424,28 +1781,23 @@ operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth)
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::FixedwingMetrics& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::FixedwingMetrics& rhs)
 {
-    return ((std::isnan(rhs.airspeed_m_s) && std::isnan(lhs.airspeed_m_s)) ||
-            rhs.airspeed_m_s == lhs.airspeed_m_s) &&
-           ((std::isnan(rhs.throttle_percentage) && std::isnan(lhs.throttle_percentage)) ||
-            rhs.throttle_percentage == lhs.throttle_percentage) &&
-           ((std::isnan(rhs.climb_rate_m_s) && std::isnan(lhs.climb_rate_m_s)) ||
-            rhs.climb_rate_m_s == lhs.climb_rate_m_s) &&
-           ((std::isnan(rhs.groundspeed_m_s) && std::isnan(lhs.groundspeed_m_s)) ||
-            rhs.groundspeed_m_s == lhs.groundspeed_m_s) &&
-           ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
-            rhs.heading_deg == lhs.heading_deg) &&
-           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
-            rhs.absolute_altitude_m == lhs.absolute_altitude_m);
+    return
+        ((std::isnan(rhs.airspeed_m_s) && std::isnan(lhs.airspeed_m_s)) || rhs.airspeed_m_s == lhs.airspeed_m_s) &&
+        ((std::isnan(rhs.throttle_percentage) && std::isnan(lhs.throttle_percentage)) || rhs.throttle_percentage == lhs.throttle_percentage) &&
+        ((std::isnan(rhs.climb_rate_m_s) && std::isnan(lhs.climb_rate_m_s)) || rhs.climb_rate_m_s == lhs.climb_rate_m_s) &&
+        ((std::isnan(rhs.groundspeed_m_s) && std::isnan(lhs.groundspeed_m_s)) || rhs.groundspeed_m_s == lhs.groundspeed_m_s) &&
+        ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) || rhs.heading_deg == lhs.heading_deg) &&
+        ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) || rhs.absolute_altitude_m == lhs.absolute_altitude_m);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics)
 {
     str << std::setprecision(15);
-    str << "fixedwing_metrics:" << '\n' << "{\n";
+    str << "fixedwing_metrics:" << '\n'
+        << "{\n";
     str << "    airspeed_m_s: " << fixedwing_metrics.airspeed_m_s << '\n';
     str << "    throttle_percentage: " << fixedwing_metrics.throttle_percentage << '\n';
     str << "    climb_rate_m_s: " << fixedwing_metrics.climb_rate_m_s << '\n';
@@ -1456,22 +1808,20 @@ operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metri
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::AccelerationFrd& lhs, const Telemetry::AccelerationFrd& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::AccelerationFrd& lhs, const Telemetry::AccelerationFrd& rhs)
 {
-    return ((std::isnan(rhs.forward_m_s2) && std::isnan(lhs.forward_m_s2)) ||
-            rhs.forward_m_s2 == lhs.forward_m_s2) &&
-           ((std::isnan(rhs.right_m_s2) && std::isnan(lhs.right_m_s2)) ||
-            rhs.right_m_s2 == lhs.right_m_s2) &&
-           ((std::isnan(rhs.down_m_s2) && std::isnan(lhs.down_m_s2)) ||
-            rhs.down_m_s2 == lhs.down_m_s2);
+    return
+        ((std::isnan(rhs.forward_m_s2) && std::isnan(lhs.forward_m_s2)) || rhs.forward_m_s2 == lhs.forward_m_s2) &&
+        ((std::isnan(rhs.right_m_s2) && std::isnan(lhs.right_m_s2)) || rhs.right_m_s2 == lhs.right_m_s2) &&
+        ((std::isnan(rhs.down_m_s2) && std::isnan(lhs.down_m_s2)) || rhs.down_m_s2 == lhs.down_m_s2);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::AccelerationFrd const& acceleration_frd)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::AccelerationFrd const& acceleration_frd)
 {
     str << std::setprecision(15);
-    str << "acceleration_frd:" << '\n' << "{\n";
+    str << "acceleration_frd:" << '\n'
+        << "{\n";
     str << "    forward_m_s2: " << acceleration_frd.forward_m_s2 << '\n';
     str << "    right_m_s2: " << acceleration_frd.right_m_s2 << '\n';
     str << "    down_m_s2: " << acceleration_frd.down_m_s2 << '\n';
@@ -1479,22 +1829,20 @@ operator<<(std::ostream& str, Telemetry::AccelerationFrd const& acceleration_frd
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::AngularVelocityFrd& lhs, const Telemetry::AngularVelocityFrd& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::AngularVelocityFrd& lhs, const Telemetry::AngularVelocityFrd& rhs)
 {
-    return ((std::isnan(rhs.forward_rad_s) && std::isnan(lhs.forward_rad_s)) ||
-            rhs.forward_rad_s == lhs.forward_rad_s) &&
-           ((std::isnan(rhs.right_rad_s) && std::isnan(lhs.right_rad_s)) ||
-            rhs.right_rad_s == lhs.right_rad_s) &&
-           ((std::isnan(rhs.down_rad_s) && std::isnan(lhs.down_rad_s)) ||
-            rhs.down_rad_s == lhs.down_rad_s);
+    return
+        ((std::isnan(rhs.forward_rad_s) && std::isnan(lhs.forward_rad_s)) || rhs.forward_rad_s == lhs.forward_rad_s) &&
+        ((std::isnan(rhs.right_rad_s) && std::isnan(lhs.right_rad_s)) || rhs.right_rad_s == lhs.right_rad_s) &&
+        ((std::isnan(rhs.down_rad_s) && std::isnan(lhs.down_rad_s)) || rhs.down_rad_s == lhs.down_rad_s);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::AngularVelocityFrd const& angular_velocity_frd)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::AngularVelocityFrd const& angular_velocity_frd)
 {
     str << std::setprecision(15);
-    str << "angular_velocity_frd:" << '\n' << "{\n";
+    str << "angular_velocity_frd:" << '\n'
+        << "{\n";
     str << "    forward_rad_s: " << angular_velocity_frd.forward_rad_s << '\n';
     str << "    right_rad_s: " << angular_velocity_frd.right_rad_s << '\n';
     str << "    down_rad_s: " << angular_velocity_frd.down_rad_s << '\n';
@@ -1502,22 +1850,20 @@ operator<<(std::ostream& str, Telemetry::AngularVelocityFrd const& angular_veloc
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::MagneticFieldFrd& lhs, const Telemetry::MagneticFieldFrd& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::MagneticFieldFrd& lhs, const Telemetry::MagneticFieldFrd& rhs)
 {
-    return ((std::isnan(rhs.forward_gauss) && std::isnan(lhs.forward_gauss)) ||
-            rhs.forward_gauss == lhs.forward_gauss) &&
-           ((std::isnan(rhs.right_gauss) && std::isnan(lhs.right_gauss)) ||
-            rhs.right_gauss == lhs.right_gauss) &&
-           ((std::isnan(rhs.down_gauss) && std::isnan(lhs.down_gauss)) ||
-            rhs.down_gauss == lhs.down_gauss);
+    return
+        ((std::isnan(rhs.forward_gauss) && std::isnan(lhs.forward_gauss)) || rhs.forward_gauss == lhs.forward_gauss) &&
+        ((std::isnan(rhs.right_gauss) && std::isnan(lhs.right_gauss)) || rhs.right_gauss == lhs.right_gauss) &&
+        ((std::isnan(rhs.down_gauss) && std::isnan(lhs.down_gauss)) || rhs.down_gauss == lhs.down_gauss);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& magnetic_field_frd)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& magnetic_field_frd)
 {
     str << std::setprecision(15);
-    str << "magnetic_field_frd:" << '\n' << "{\n";
+    str << "magnetic_field_frd:" << '\n'
+        << "{\n";
     str << "    forward_gauss: " << magnetic_field_frd.forward_gauss << '\n';
     str << "    right_gauss: " << magnetic_field_frd.right_gauss << '\n';
     str << "    down_gauss: " << magnetic_field_frd.down_gauss << '\n';
@@ -1525,20 +1871,22 @@ operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& magnetic_field_
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Imu& lhs, const Telemetry::Imu& rhs)
 {
-    return (rhs.acceleration_frd == lhs.acceleration_frd) &&
-           (rhs.angular_velocity_frd == lhs.angular_velocity_frd) &&
-           (rhs.magnetic_field_frd == lhs.magnetic_field_frd) &&
-           ((std::isnan(rhs.temperature_degc) && std::isnan(lhs.temperature_degc)) ||
-            rhs.temperature_degc == lhs.temperature_degc) &&
-           (rhs.timestamp_us == lhs.timestamp_us);
+    return
+        (rhs.acceleration_frd == lhs.acceleration_frd) &&
+        (rhs.angular_velocity_frd == lhs.angular_velocity_frd) &&
+        (rhs.magnetic_field_frd == lhs.magnetic_field_frd) &&
+        ((std::isnan(rhs.temperature_degc) && std::isnan(lhs.temperature_degc)) || rhs.temperature_degc == lhs.temperature_degc) &&
+        (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu)
 {
     str << std::setprecision(15);
-    str << "imu:" << '\n' << "{\n";
+    str << "imu:" << '\n'
+        << "{\n";
     str << "    acceleration_frd: " << imu.acceleration_frd << '\n';
     str << "    angular_velocity_frd: " << imu.angular_velocity_frd << '\n';
     str << "    magnetic_field_frd: " << imu.magnetic_field_frd << '\n';
@@ -1548,22 +1896,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& 
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Telemetry::GpsGlobalOrigin& lhs, const Telemetry::GpsGlobalOrigin& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Telemetry::GpsGlobalOrigin& lhs, const Telemetry::GpsGlobalOrigin& rhs)
 {
-    return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
-            rhs.latitude_deg == lhs.latitude_deg) &&
-           ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) ||
-            rhs.longitude_deg == lhs.longitude_deg) &&
-           ((std::isnan(rhs.altitude_m) && std::isnan(lhs.altitude_m)) ||
-            rhs.altitude_m == lhs.altitude_m);
+    return
+        ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) || rhs.latitude_deg == lhs.latitude_deg) &&
+        ((std::isnan(rhs.longitude_deg) && std::isnan(lhs.longitude_deg)) || rhs.longitude_deg == lhs.longitude_deg) &&
+        ((std::isnan(rhs.altitude_m) && std::isnan(lhs.altitude_m)) || rhs.altitude_m == lhs.altitude_m);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::GpsGlobalOrigin const& gps_global_origin)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::GpsGlobalOrigin const& gps_global_origin)
 {
     str << std::setprecision(15);
-    str << "gps_global_origin:" << '\n' << "{\n";
+    str << "gps_global_origin:" << '\n'
+        << "{\n";
     str << "    latitude_deg: " << gps_global_origin.latitude_deg << '\n';
     str << "    longitude_deg: " << gps_global_origin.longitude_deg << '\n';
     str << "    altitude_m: " << gps_global_origin.altitude_m << '\n';
@@ -1571,27 +1917,24 @@ operator<<(std::ostream& str, Telemetry::GpsGlobalOrigin const& gps_global_origi
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Altitude& lhs, const Telemetry::Altitude& rhs)
 {
-    return ((std::isnan(rhs.altitude_monotonic_m) && std::isnan(lhs.altitude_monotonic_m)) ||
-            rhs.altitude_monotonic_m == lhs.altitude_monotonic_m) &&
-           ((std::isnan(rhs.altitude_amsl_m) && std::isnan(lhs.altitude_amsl_m)) ||
-            rhs.altitude_amsl_m == lhs.altitude_amsl_m) &&
-           ((std::isnan(rhs.altitude_local_m) && std::isnan(lhs.altitude_local_m)) ||
-            rhs.altitude_local_m == lhs.altitude_local_m) &&
-           ((std::isnan(rhs.altitude_relative_m) && std::isnan(lhs.altitude_relative_m)) ||
-            rhs.altitude_relative_m == lhs.altitude_relative_m) &&
-           ((std::isnan(rhs.altitude_terrain_m) && std::isnan(lhs.altitude_terrain_m)) ||
-            rhs.altitude_terrain_m == lhs.altitude_terrain_m) &&
-           ((std::isnan(rhs.bottom_clearance_m) && std::isnan(lhs.bottom_clearance_m)) ||
-            rhs.bottom_clearance_m == lhs.bottom_clearance_m) &&
-           (rhs.timestamp_us == lhs.timestamp_us);
+    return
+        ((std::isnan(rhs.altitude_monotonic_m) && std::isnan(lhs.altitude_monotonic_m)) || rhs.altitude_monotonic_m == lhs.altitude_monotonic_m) &&
+        ((std::isnan(rhs.altitude_amsl_m) && std::isnan(lhs.altitude_amsl_m)) || rhs.altitude_amsl_m == lhs.altitude_amsl_m) &&
+        ((std::isnan(rhs.altitude_local_m) && std::isnan(lhs.altitude_local_m)) || rhs.altitude_local_m == lhs.altitude_local_m) &&
+        ((std::isnan(rhs.altitude_relative_m) && std::isnan(lhs.altitude_relative_m)) || rhs.altitude_relative_m == lhs.altitude_relative_m) &&
+        ((std::isnan(rhs.altitude_terrain_m) && std::isnan(lhs.altitude_terrain_m)) || rhs.altitude_terrain_m == lhs.altitude_terrain_m) &&
+        ((std::isnan(rhs.bottom_clearance_m) && std::isnan(lhs.bottom_clearance_m)) || rhs.bottom_clearance_m == lhs.bottom_clearance_m) &&
+        (rhs.timestamp_us == lhs.timestamp_us);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude)
 {
     str << std::setprecision(15);
-    str << "altitude:" << '\n' << "{\n";
+    str << "altitude:" << '\n'
+        << "{\n";
     str << "    altitude_monotonic_m: " << altitude.altitude_monotonic_m << '\n';
     str << "    altitude_amsl_m: " << altitude.altitude_amsl_m << '\n';
     str << "    altitude_local_m: " << altitude.altitude_local_m << '\n';
@@ -1603,48 +1946,38 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Altitude co
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Telemetry::Wind& lhs, const Telemetry::Wind& rhs)
 {
-    return ((std::isnan(rhs.wind_x_ned_m_s) && std::isnan(lhs.wind_x_ned_m_s)) ||
-            rhs.wind_x_ned_m_s == lhs.wind_x_ned_m_s) &&
-           ((std::isnan(rhs.wind_y_ned_m_s) && std::isnan(lhs.wind_y_ned_m_s)) ||
-            rhs.wind_y_ned_m_s == lhs.wind_y_ned_m_s) &&
-           ((std::isnan(rhs.wind_z_ned_m_s) && std::isnan(lhs.wind_z_ned_m_s)) ||
-            rhs.wind_z_ned_m_s == lhs.wind_z_ned_m_s) &&
-           ((std::isnan(rhs.horizontal_variability_stddev_m_s) &&
-             std::isnan(lhs.horizontal_variability_stddev_m_s)) ||
-            rhs.horizontal_variability_stddev_m_s == lhs.horizontal_variability_stddev_m_s) &&
-           ((std::isnan(rhs.vertical_variability_stddev_m_s) &&
-             std::isnan(lhs.vertical_variability_stddev_m_s)) ||
-            rhs.vertical_variability_stddev_m_s == lhs.vertical_variability_stddev_m_s) &&
-           ((std::isnan(rhs.wind_altitude_msl_m) && std::isnan(lhs.wind_altitude_msl_m)) ||
-            rhs.wind_altitude_msl_m == lhs.wind_altitude_msl_m) &&
-           ((std::isnan(rhs.horizontal_wind_speed_accuracy_m_s) &&
-             std::isnan(lhs.horizontal_wind_speed_accuracy_m_s)) ||
-            rhs.horizontal_wind_speed_accuracy_m_s == lhs.horizontal_wind_speed_accuracy_m_s) &&
-           ((std::isnan(rhs.vertical_wind_speed_accuracy_m_s) &&
-             std::isnan(lhs.vertical_wind_speed_accuracy_m_s)) ||
-            rhs.vertical_wind_speed_accuracy_m_s == lhs.vertical_wind_speed_accuracy_m_s);
+    return
+        ((std::isnan(rhs.wind_x_ned_m_s) && std::isnan(lhs.wind_x_ned_m_s)) || rhs.wind_x_ned_m_s == lhs.wind_x_ned_m_s) &&
+        ((std::isnan(rhs.wind_y_ned_m_s) && std::isnan(lhs.wind_y_ned_m_s)) || rhs.wind_y_ned_m_s == lhs.wind_y_ned_m_s) &&
+        ((std::isnan(rhs.wind_z_ned_m_s) && std::isnan(lhs.wind_z_ned_m_s)) || rhs.wind_z_ned_m_s == lhs.wind_z_ned_m_s) &&
+        ((std::isnan(rhs.horizontal_variability_stddev_m_s) && std::isnan(lhs.horizontal_variability_stddev_m_s)) || rhs.horizontal_variability_stddev_m_s == lhs.horizontal_variability_stddev_m_s) &&
+        ((std::isnan(rhs.vertical_variability_stddev_m_s) && std::isnan(lhs.vertical_variability_stddev_m_s)) || rhs.vertical_variability_stddev_m_s == lhs.vertical_variability_stddev_m_s) &&
+        ((std::isnan(rhs.wind_altitude_msl_m) && std::isnan(lhs.wind_altitude_msl_m)) || rhs.wind_altitude_msl_m == lhs.wind_altitude_msl_m) &&
+        ((std::isnan(rhs.horizontal_wind_speed_accuracy_m_s) && std::isnan(lhs.horizontal_wind_speed_accuracy_m_s)) || rhs.horizontal_wind_speed_accuracy_m_s == lhs.horizontal_wind_speed_accuracy_m_s) &&
+        ((std::isnan(rhs.vertical_wind_speed_accuracy_m_s) && std::isnan(lhs.vertical_wind_speed_accuracy_m_s)) || rhs.vertical_wind_speed_accuracy_m_s == lhs.vertical_wind_speed_accuracy_m_s);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Wind const& wind)
 {
     str << std::setprecision(15);
-    str << "wind:" << '\n' << "{\n";
+    str << "wind:" << '\n'
+        << "{\n";
     str << "    wind_x_ned_m_s: " << wind.wind_x_ned_m_s << '\n';
     str << "    wind_y_ned_m_s: " << wind.wind_y_ned_m_s << '\n';
     str << "    wind_z_ned_m_s: " << wind.wind_z_ned_m_s << '\n';
-    str << "    horizontal_variability_stddev_m_s: " << wind.horizontal_variability_stddev_m_s
-        << '\n';
+    str << "    horizontal_variability_stddev_m_s: " << wind.horizontal_variability_stddev_m_s << '\n';
     str << "    vertical_variability_stddev_m_s: " << wind.vertical_variability_stddev_m_s << '\n';
     str << "    wind_altitude_msl_m: " << wind.wind_altitude_msl_m << '\n';
-    str << "    horizontal_wind_speed_accuracy_m_s: " << wind.horizontal_wind_speed_accuracy_m_s
-        << '\n';
-    str << "    vertical_wind_speed_accuracy_m_s: " << wind.vertical_wind_speed_accuracy_m_s
-        << '\n';
+    str << "    horizontal_wind_speed_accuracy_m_s: " << wind.horizontal_wind_speed_accuracy_m_s << '\n';
+    str << "    vertical_wind_speed_accuracy_m_s: " << wind.vertical_wind_speed_accuracy_m_s << '\n';
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Telemetry::Result const& result)
 {
@@ -1674,6 +2007,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::Result cons
 {
     return str << to_string(result);
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Telemetry::FixType const& fix_type)
 {
@@ -1720,8 +2055,7 @@ MAVSDK_PUBLIC std::string_view to_string(Telemetry::BatteryFunction const& batte
     }
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::BatteryFunction const& battery_function)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::BatteryFunction const& battery_function)
 {
     return str << to_string(battery_function);
 }
@@ -1793,8 +2127,7 @@ MAVSDK_PUBLIC std::string_view to_string(Telemetry::StatusTextType const& status
     }
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::StatusTextType const& status_text_type)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::StatusTextType const& status_text_type)
 {
     return str << to_string(status_text_type);
 }
@@ -1817,8 +2150,7 @@ MAVSDK_PUBLIC std::string_view to_string(Telemetry::LandedState const& landed_st
     }
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Telemetry::LandedState const& landed_state)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed_state)
 {
     return str << to_string(landed_state);
 }
@@ -1845,5 +2177,6 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Telemetry::VtolState c
 {
     return str << to_string(vtol_state);
 }
+
 
 } // namespace mavsdk

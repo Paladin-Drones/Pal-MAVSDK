@@ -11,30 +11,44 @@ namespace mavsdk {
 
 using RtcmData = Rtk::RtcmData;
 
+
+
+
 Rtk::Rtk(System& system) : PluginBase(), _impl{std::make_unique<RtkImpl>(system)} {}
 
 Rtk::Rtk(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<RtkImpl>(system)} {}
 
+
 Rtk::~Rtk() {}
+
+
+
+
 
 Rtk::Result Rtk::send_rtcm_data(RtcmData rtcm_data) const
 {
     return _impl->send_rtcm_data(rtcm_data);
 }
 
+
+
 MAVSDK_PUBLIC bool operator==(const Rtk::RtcmData& lhs, const Rtk::RtcmData& rhs)
 {
-    return (rhs.data_base64 == lhs.data_base64);
+    return
+        (rhs.data_base64 == lhs.data_base64);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data)
 {
     str << std::setprecision(15);
-    str << "rtcm_data:" << '\n' << "{\n";
+    str << "rtcm_data:" << '\n'
+        << "{\n";
     str << "    data_base64: " << rtcm_data.data_base64 << '\n';
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Rtk::Result const& result)
 {
@@ -58,5 +72,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Rtk::Result const& res
 {
     return str << to_string(result);
 }
+
+
+
 
 } // namespace mavsdk

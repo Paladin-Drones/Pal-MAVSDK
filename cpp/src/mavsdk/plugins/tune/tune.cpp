@@ -11,37 +11,46 @@ namespace mavsdk {
 
 using TuneDescription = Tune::TuneDescription;
 
+
+
+
 Tune::Tune(System& system) : PluginBase(), _impl{std::make_unique<TuneImpl>(system)} {}
 
-Tune::Tune(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<TuneImpl>(system)}
-{}
+Tune::Tune(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<TuneImpl>(system)} {}
+
 
 Tune::~Tune() {}
+
+
 
 void Tune::play_tune_async(TuneDescription tune_description, const ResultCallback callback)
 {
     _impl->play_tune_async(tune_description, callback);
 }
 
+
+
 Tune::Result Tune::play_tune(TuneDescription tune_description) const
 {
     return _impl->play_tune(tune_description);
 }
 
+
+
 MAVSDK_PUBLIC bool operator==(const Tune::TuneDescription& lhs, const Tune::TuneDescription& rhs)
 {
-    return (rhs.song_elements == lhs.song_elements) && (rhs.tempo == lhs.tempo);
+    return
+        (rhs.song_elements == lhs.song_elements) &&
+        (rhs.tempo == lhs.tempo);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Tune::TuneDescription const& tune_description)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Tune::TuneDescription const& tune_description)
 {
     str << std::setprecision(15);
-    str << "tune_description:" << '\n' << "{\n";
+    str << "tune_description:" << '\n'
+        << "{\n";
     str << "    song_elements: [";
-    for (auto it = tune_description.song_elements.begin();
-         it != tune_description.song_elements.end();
-         ++it) {
+    for (auto it = tune_description.song_elements.begin(); it != tune_description.song_elements.end(); ++it) {
         str << *it;
         str << (it + 1 != tune_description.song_elements.end() ? ", " : "]\n");
     }
@@ -49,6 +58,8 @@ operator<<(std::ostream& str, Tune::TuneDescription const& tune_description)
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Tune::Result const& result)
 {
@@ -74,6 +85,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Tune::Result const& re
 {
     return str << to_string(result);
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Tune::SongElement const& song_element)
 {
@@ -129,5 +142,6 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Tune::SongElement cons
 {
     return str << to_string(song_element);
 }
+
 
 } // namespace mavsdk

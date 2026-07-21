@@ -9,20 +9,28 @@
 
 namespace mavsdk {
 
+
+
+
+
 Failure::Failure(System& system) : PluginBase(), _impl{std::make_unique<FailureImpl>(system)} {}
 
-Failure::Failure(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<FailureImpl>(system)}
-{}
+Failure::Failure(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<FailureImpl>(system)} {}
+
 
 Failure::~Failure() {}
 
-Failure::Result
-Failure::inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const
+
+
+
+
+Failure::Result Failure::inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const
 {
     return _impl->inject(failure_unit, failure_type, instance);
 }
+
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Failure::Result const& result)
 {
@@ -52,6 +60,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::Result const&
 {
     return str << to_string(result);
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Failure::FailureUnit const& failure_unit)
 {
@@ -124,5 +134,6 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Failure::FailureType c
 {
     return str << to_string(failure_type);
 }
+
 
 } // namespace mavsdk

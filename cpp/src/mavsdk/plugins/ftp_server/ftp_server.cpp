@@ -9,17 +9,26 @@
 
 namespace mavsdk {
 
-FtpServer::FtpServer(std::shared_ptr<ServerComponent> server_component) :
-    ServerPluginBase(),
-    _impl{std::make_unique<FtpServerImpl>(server_component)}
-{}
+
+
+
+
+FtpServer::FtpServer(std::shared_ptr<ServerComponent> server_component) : ServerPluginBase(), _impl{std::make_unique<FtpServerImpl>(server_component)} {}
+
 
 FtpServer::~FtpServer() {}
+
+
+
+
 
 FtpServer::Result FtpServer::set_root_dir(std::string path) const
 {
     return _impl->set_root_dir(path);
 }
+
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(FtpServer::Result const& result)
 {
@@ -41,5 +50,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, FtpServer::Result cons
 {
     return str << to_string(result);
 }
+
+
+
 
 } // namespace mavsdk

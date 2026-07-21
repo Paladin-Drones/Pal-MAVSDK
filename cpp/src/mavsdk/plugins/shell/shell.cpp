@@ -9,20 +9,29 @@
 
 namespace mavsdk {
 
+
+
+
+
 Shell::Shell(System& system) : PluginBase(), _impl{std::make_unique<ShellImpl>(system)} {}
 
-Shell::Shell(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<ShellImpl>(system)}
-{}
+Shell::Shell(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<ShellImpl>(system)} {}
+
 
 Shell::~Shell() {}
+
+
+
+
 
 Shell::Result Shell::send(std::string command) const
 {
     return _impl->send(command);
 }
 
+
+
+    
 Shell::ReceiveHandle Shell::subscribe_receive(const ReceiveCallback& callback)
 {
     return _impl->subscribe_receive(callback);
@@ -32,6 +41,12 @@ void Shell::unsubscribe_receive(ReceiveHandle handle)
 {
     _impl->unsubscribe_receive(handle);
 }
+    
+
+
+
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Shell::Result const& result)
 {
@@ -57,5 +72,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Shell::Result const& r
 {
     return str << to_string(result);
 }
+
+
+
 
 } // namespace mavsdk

@@ -12,66 +12,90 @@ namespace mavsdk {
 using ProgressData = LogFiles::ProgressData;
 using Entry = LogFiles::Entry;
 
+
+
+
 LogFiles::LogFiles(System& system) : PluginBase(), _impl{std::make_unique<LogFilesImpl>(system)} {}
 
-LogFiles::LogFiles(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<LogFilesImpl>(system)}
-{}
+LogFiles::LogFiles(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<LogFilesImpl>(system)} {}
+
 
 LogFiles::~LogFiles() {}
+
+
 
 void LogFiles::get_entries_async(const GetEntriesCallback callback)
 {
     _impl->get_entries_async(callback);
 }
 
+
+
 std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFiles::get_entries() const
 {
     return _impl->get_entries();
 }
 
-void LogFiles::download_log_file_async(
-    Entry entry, std::string path, const DownloadLogFileCallback& callback)
+
+
+    
+void LogFiles::download_log_file_async(Entry entry, std::string path, const DownloadLogFileCallback& callback)
 {
     _impl->download_log_file_async(entry, path, callback);
 }
+    
+
+
+
+
+
+
 
 LogFiles::Result LogFiles::erase_all_log_files() const
 {
     return _impl->erase_all_log_files();
 }
 
+
+
 MAVSDK_PUBLIC bool operator==(const LogFiles::ProgressData& lhs, const LogFiles::ProgressData& rhs)
 {
-    return ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) || rhs.progress == lhs.progress);
+    return
+        ((std::isnan(rhs.progress) && std::isnan(lhs.progress)) || rhs.progress == lhs.progress);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, LogFiles::ProgressData const& progress_data)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogFiles::ProgressData const& progress_data)
 {
     str << std::setprecision(15);
-    str << "progress_data:" << '\n' << "{\n";
+    str << "progress_data:" << '\n'
+        << "{\n";
     str << "    progress: " << progress_data.progress << '\n';
     str << '}';
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const LogFiles::Entry& lhs, const LogFiles::Entry& rhs)
 {
-    return (rhs.id == lhs.id) && (rhs.date == lhs.date) && (rhs.size_bytes == lhs.size_bytes);
+    return
+        (rhs.id == lhs.id) &&
+        (rhs.date == lhs.date) &&
+        (rhs.size_bytes == lhs.size_bytes);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogFiles::Entry const& entry)
 {
     str << std::setprecision(15);
-    str << "entry:" << '\n' << "{\n";
+    str << "entry:" << '\n'
+        << "{\n";
     str << "    id: " << entry.id << '\n';
     str << "    date: " << entry.date << '\n';
     str << "    size_bytes: " << entry.size_bytes << '\n';
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(LogFiles::Result const& result)
 {
@@ -101,5 +125,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, LogFiles::Result const
 {
     return str << to_string(result);
 }
+
+
+
 
 } // namespace mavsdk

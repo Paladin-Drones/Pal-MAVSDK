@@ -21,48 +21,67 @@ using VisionSpeedEstimate = Mocap::VisionSpeedEstimate;
 using AttitudePositionMocap = Mocap::AttitudePositionMocap;
 using Odometry = Mocap::Odometry;
 
+
+
+
 Mocap::Mocap(System& system) : PluginBase(), _impl{std::make_unique<MocapImpl>(system)} {}
 
-Mocap::Mocap(std::shared_ptr<System> system) :
-    PluginBase(),
-    _impl{std::make_unique<MocapImpl>(system)}
-{}
+Mocap::Mocap(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<MocapImpl>(system)} {}
+
 
 Mocap::~Mocap() {}
 
-Mocap::Result
-Mocap::set_vision_position_estimate(VisionPositionEstimate vision_position_estimate) const
+
+
+
+
+Mocap::Result Mocap::set_vision_position_estimate(VisionPositionEstimate vision_position_estimate) const
 {
     return _impl->set_vision_position_estimate(vision_position_estimate);
 }
+
+
+
+
 
 Mocap::Result Mocap::set_vision_speed_estimate(VisionSpeedEstimate vision_speed_estimate) const
 {
     return _impl->set_vision_speed_estimate(vision_speed_estimate);
 }
 
-Mocap::Result
-Mocap::set_attitude_position_mocap(AttitudePositionMocap attitude_position_mocap) const
+
+
+
+
+Mocap::Result Mocap::set_attitude_position_mocap(AttitudePositionMocap attitude_position_mocap) const
 {
     return _impl->set_attitude_position_mocap(attitude_position_mocap);
 }
+
+
+
+
 
 Mocap::Result Mocap::set_odometry(Odometry odometry) const
 {
     return _impl->set_odometry(odometry);
 }
 
+
+
 MAVSDK_PUBLIC bool operator==(const Mocap::PositionBody& lhs, const Mocap::PositionBody& rhs)
 {
-    return ((std::isnan(rhs.x_m) && std::isnan(lhs.x_m)) || rhs.x_m == lhs.x_m) &&
-           ((std::isnan(rhs.y_m) && std::isnan(lhs.y_m)) || rhs.y_m == lhs.y_m) &&
-           ((std::isnan(rhs.z_m) && std::isnan(lhs.z_m)) || rhs.z_m == lhs.z_m);
+    return
+        ((std::isnan(rhs.x_m) && std::isnan(lhs.x_m)) || rhs.x_m == lhs.x_m) &&
+        ((std::isnan(rhs.y_m) && std::isnan(lhs.y_m)) || rhs.y_m == lhs.y_m) &&
+        ((std::isnan(rhs.z_m) && std::isnan(lhs.z_m)) || rhs.z_m == lhs.z_m);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::PositionBody const& position_body)
 {
     str << std::setprecision(15);
-    str << "position_body:" << '\n' << "{\n";
+    str << "position_body:" << '\n'
+        << "{\n";
     str << "    x_m: " << position_body.x_m << '\n';
     str << "    y_m: " << position_body.y_m << '\n';
     str << "    z_m: " << position_body.z_m << '\n';
@@ -70,19 +89,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::PositionBody co
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Mocap::AngleBody& lhs, const Mocap::AngleBody& rhs)
 {
-    return ((std::isnan(rhs.roll_rad) && std::isnan(lhs.roll_rad)) ||
-            rhs.roll_rad == lhs.roll_rad) &&
-           ((std::isnan(rhs.pitch_rad) && std::isnan(lhs.pitch_rad)) ||
-            rhs.pitch_rad == lhs.pitch_rad) &&
-           ((std::isnan(rhs.yaw_rad) && std::isnan(lhs.yaw_rad)) || rhs.yaw_rad == lhs.yaw_rad);
+    return
+        ((std::isnan(rhs.roll_rad) && std::isnan(lhs.roll_rad)) || rhs.roll_rad == lhs.roll_rad) &&
+        ((std::isnan(rhs.pitch_rad) && std::isnan(lhs.pitch_rad)) || rhs.pitch_rad == lhs.pitch_rad) &&
+        ((std::isnan(rhs.yaw_rad) && std::isnan(lhs.yaw_rad)) || rhs.yaw_rad == lhs.yaw_rad);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::AngleBody const& angle_body)
 {
     str << std::setprecision(15);
-    str << "angle_body:" << '\n' << "{\n";
+    str << "angle_body:" << '\n'
+        << "{\n";
     str << "    roll_rad: " << angle_body.roll_rad << '\n';
     str << "    pitch_rad: " << angle_body.pitch_rad << '\n';
     str << "    yaw_rad: " << angle_body.yaw_rad << '\n';
@@ -90,17 +110,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::AngleBody const
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Mocap::SpeedBody& lhs, const Mocap::SpeedBody& rhs)
 {
-    return ((std::isnan(rhs.x_m_s) && std::isnan(lhs.x_m_s)) || rhs.x_m_s == lhs.x_m_s) &&
-           ((std::isnan(rhs.y_m_s) && std::isnan(lhs.y_m_s)) || rhs.y_m_s == lhs.y_m_s) &&
-           ((std::isnan(rhs.z_m_s) && std::isnan(lhs.z_m_s)) || rhs.z_m_s == lhs.z_m_s);
+    return
+        ((std::isnan(rhs.x_m_s) && std::isnan(lhs.x_m_s)) || rhs.x_m_s == lhs.x_m_s) &&
+        ((std::isnan(rhs.y_m_s) && std::isnan(lhs.y_m_s)) || rhs.y_m_s == lhs.y_m_s) &&
+        ((std::isnan(rhs.z_m_s) && std::isnan(lhs.z_m_s)) || rhs.z_m_s == lhs.z_m_s);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::SpeedBody const& speed_body)
 {
     str << std::setprecision(15);
-    str << "speed_body:" << '\n' << "{\n";
+    str << "speed_body:" << '\n'
+        << "{\n";
     str << "    x_m_s: " << speed_body.x_m_s << '\n';
     str << "    y_m_s: " << speed_body.y_m_s << '\n';
     str << "    z_m_s: " << speed_body.z_m_s << '\n';
@@ -108,19 +131,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::SpeedBody const
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Mocap::SpeedNed& lhs, const Mocap::SpeedNed& rhs)
 {
-    return ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) ||
-            rhs.north_m_s == lhs.north_m_s) &&
-           ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) ||
-            rhs.east_m_s == lhs.east_m_s) &&
-           ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s);
+    return
+        ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) || rhs.north_m_s == lhs.north_m_s) &&
+        ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) || rhs.east_m_s == lhs.east_m_s) &&
+        ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::SpeedNed const& speed_ned)
 {
     str << std::setprecision(15);
-    str << "speed_ned:" << '\n' << "{\n";
+    str << "speed_ned:" << '\n'
+        << "{\n";
     str << "    north_m_s: " << speed_ned.north_m_s << '\n';
     str << "    east_m_s: " << speed_ned.east_m_s << '\n';
     str << "    down_m_s: " << speed_ned.down_m_s << '\n';
@@ -128,22 +152,20 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::SpeedNed const&
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Mocap::AngularVelocityBody& lhs, const Mocap::AngularVelocityBody& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Mocap::AngularVelocityBody& lhs, const Mocap::AngularVelocityBody& rhs)
 {
-    return ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) ||
-            rhs.roll_rad_s == lhs.roll_rad_s) &&
-           ((std::isnan(rhs.pitch_rad_s) && std::isnan(lhs.pitch_rad_s)) ||
-            rhs.pitch_rad_s == lhs.pitch_rad_s) &&
-           ((std::isnan(rhs.yaw_rad_s) && std::isnan(lhs.yaw_rad_s)) ||
-            rhs.yaw_rad_s == lhs.yaw_rad_s);
+    return
+        ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) || rhs.roll_rad_s == lhs.roll_rad_s) &&
+        ((std::isnan(rhs.pitch_rad_s) && std::isnan(lhs.pitch_rad_s)) || rhs.pitch_rad_s == lhs.pitch_rad_s) &&
+        ((std::isnan(rhs.yaw_rad_s) && std::isnan(lhs.yaw_rad_s)) || rhs.yaw_rad_s == lhs.yaw_rad_s);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Mocap::AngularVelocityBody const& angular_velocity_body)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::AngularVelocityBody const& angular_velocity_body)
 {
     str << std::setprecision(15);
-    str << "angular_velocity_body:" << '\n' << "{\n";
+    str << "angular_velocity_body:" << '\n'
+        << "{\n";
     str << "    roll_rad_s: " << angular_velocity_body.roll_rad_s << '\n';
     str << "    pitch_rad_s: " << angular_velocity_body.pitch_rad_s << '\n';
     str << "    yaw_rad_s: " << angular_velocity_body.yaw_rad_s << '\n';
@@ -151,18 +173,20 @@ operator<<(std::ostream& str, Mocap::AngularVelocityBody const& angular_velocity
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Mocap::Covariance& lhs, const Mocap::Covariance& rhs)
 {
-    return (rhs.covariance_matrix == lhs.covariance_matrix);
+    return
+        (rhs.covariance_matrix == lhs.covariance_matrix);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Covariance const& covariance)
 {
     str << std::setprecision(15);
-    str << "covariance:" << '\n' << "{\n";
+    str << "covariance:" << '\n'
+        << "{\n";
     str << "    covariance_matrix: [";
-    for (auto it = covariance.covariance_matrix.begin(); it != covariance.covariance_matrix.end();
-         ++it) {
+    for (auto it = covariance.covariance_matrix.begin(); it != covariance.covariance_matrix.end(); ++it) {
         str << *it;
         str << (it + 1 != covariance.covariance_matrix.end() ? ", " : "]\n");
     }
@@ -170,18 +194,21 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Covariance cons
     return str;
 }
 
+
 MAVSDK_PUBLIC bool operator==(const Mocap::Quaternion& lhs, const Mocap::Quaternion& rhs)
 {
-    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
-           ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
-           ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
-           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
+    return
+        ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
+        ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
+        ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
+        ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Quaternion const& quaternion)
 {
     str << std::setprecision(15);
-    str << "quaternion:" << '\n' << "{\n";
+    str << "quaternion:" << '\n'
+        << "{\n";
     str << "    w: " << quaternion.w << '\n';
     str << "    x: " << quaternion.x << '\n';
     str << "    y: " << quaternion.y << '\n';
@@ -190,19 +217,22 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Quaternion cons
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Mocap::VisionPositionEstimate& lhs, const Mocap::VisionPositionEstimate& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Mocap::VisionPositionEstimate& lhs, const Mocap::VisionPositionEstimate& rhs)
 {
-    return (rhs.time_usec == lhs.time_usec) && (rhs.position_body == lhs.position_body) &&
-           (rhs.angle_body == lhs.angle_body) && (rhs.pose_covariance == lhs.pose_covariance) &&
-           (rhs.reset_counter == lhs.reset_counter);
+    return
+        (rhs.time_usec == lhs.time_usec) &&
+        (rhs.position_body == lhs.position_body) &&
+        (rhs.angle_body == lhs.angle_body) &&
+        (rhs.pose_covariance == lhs.pose_covariance) &&
+        (rhs.reset_counter == lhs.reset_counter);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Mocap::VisionPositionEstimate const& vision_position_estimate)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::VisionPositionEstimate const& vision_position_estimate)
 {
     str << std::setprecision(15);
-    str << "vision_position_estimate:" << '\n' << "{\n";
+    str << "vision_position_estimate:" << '\n'
+        << "{\n";
     str << "    time_usec: " << vision_position_estimate.time_usec << '\n';
     str << "    position_body: " << vision_position_estimate.position_body << '\n';
     str << "    angle_body: " << vision_position_estimate.angle_body << '\n';
@@ -212,19 +242,21 @@ operator<<(std::ostream& str, Mocap::VisionPositionEstimate const& vision_positi
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Mocap::VisionSpeedEstimate& lhs, const Mocap::VisionSpeedEstimate& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Mocap::VisionSpeedEstimate& lhs, const Mocap::VisionSpeedEstimate& rhs)
 {
-    return (rhs.time_usec == lhs.time_usec) && (rhs.speed_ned == lhs.speed_ned) &&
-           (rhs.speed_covariance == lhs.speed_covariance) &&
-           (rhs.reset_counter == lhs.reset_counter);
+    return
+        (rhs.time_usec == lhs.time_usec) &&
+        (rhs.speed_ned == lhs.speed_ned) &&
+        (rhs.speed_covariance == lhs.speed_covariance) &&
+        (rhs.reset_counter == lhs.reset_counter);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Mocap::VisionSpeedEstimate const& vision_speed_estimate)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::VisionSpeedEstimate const& vision_speed_estimate)
 {
     str << std::setprecision(15);
-    str << "vision_speed_estimate:" << '\n' << "{\n";
+    str << "vision_speed_estimate:" << '\n'
+        << "{\n";
     str << "    time_usec: " << vision_speed_estimate.time_usec << '\n';
     str << "    speed_ned: " << vision_speed_estimate.speed_ned << '\n';
     str << "    speed_covariance: " << vision_speed_estimate.speed_covariance << '\n';
@@ -233,18 +265,21 @@ operator<<(std::ostream& str, Mocap::VisionSpeedEstimate const& vision_speed_est
     return str;
 }
 
-MAVSDK_PUBLIC bool
-operator==(const Mocap::AttitudePositionMocap& lhs, const Mocap::AttitudePositionMocap& rhs)
+
+MAVSDK_PUBLIC bool operator==(const Mocap::AttitudePositionMocap& lhs, const Mocap::AttitudePositionMocap& rhs)
 {
-    return (rhs.time_usec == lhs.time_usec) && (rhs.q == lhs.q) &&
-           (rhs.position_body == lhs.position_body) && (rhs.pose_covariance == lhs.pose_covariance);
+    return
+        (rhs.time_usec == lhs.time_usec) &&
+        (rhs.q == lhs.q) &&
+        (rhs.position_body == lhs.position_body) &&
+        (rhs.pose_covariance == lhs.pose_covariance);
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Mocap::AttitudePositionMocap const& attitude_position_mocap)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::AttitudePositionMocap const& attitude_position_mocap)
 {
     str << std::setprecision(15);
-    str << "attitude_position_mocap:" << '\n' << "{\n";
+    str << "attitude_position_mocap:" << '\n'
+        << "{\n";
     str << "    time_usec: " << attitude_position_mocap.time_usec << '\n';
     str << "    q: " << attitude_position_mocap.q << '\n';
     str << "    position_body: " << attitude_position_mocap.position_body << '\n';
@@ -252,6 +287,8 @@ operator<<(std::ostream& str, Mocap::AttitudePositionMocap const& attitude_posit
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Mocap::Odometry::MavFrame const& mav_frame)
 {
@@ -265,14 +302,12 @@ MAVSDK_PUBLIC std::string_view to_string(Mocap::Odometry::MavFrame const& mav_fr
     }
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav_frame)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Odometry::MavFrame const& mav_frame)
 {
     return str << to_string(mav_frame);
 }
 
-MAVSDK_PUBLIC std::string_view
-to_string(Mocap::Odometry::MavEstimatorType const& mav_estimator_type)
+MAVSDK_PUBLIC std::string_view to_string(Mocap::Odometry::MavEstimatorType const& mav_estimator_type)
 {
     switch (mav_estimator_type) {
         case Mocap::Odometry::MavEstimatorType::Unknown:
@@ -298,27 +333,31 @@ to_string(Mocap::Odometry::MavEstimatorType const& mav_estimator_type)
     }
 }
 
-MAVSDK_PUBLIC std::ostream&
-operator<<(std::ostream& str, Mocap::Odometry::MavEstimatorType const& mav_estimator_type)
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Odometry::MavEstimatorType const& mav_estimator_type)
 {
     return str << to_string(mav_estimator_type);
 }
 MAVSDK_PUBLIC bool operator==(const Mocap::Odometry& lhs, const Mocap::Odometry& rhs)
 {
-    return (rhs.time_usec == lhs.time_usec) && (rhs.frame_id == lhs.frame_id) &&
-           (rhs.position_body == lhs.position_body) && (rhs.q == lhs.q) &&
-           (rhs.speed_body == lhs.speed_body) &&
-           (rhs.angular_velocity_body == lhs.angular_velocity_body) &&
-           (rhs.pose_covariance == lhs.pose_covariance) &&
-           (rhs.velocity_covariance == lhs.velocity_covariance) &&
-           (rhs.reset_counter == lhs.reset_counter) && (rhs.estimator_type == lhs.estimator_type) &&
-           (rhs.quality_percent == lhs.quality_percent);
+    return
+        (rhs.time_usec == lhs.time_usec) &&
+        (rhs.frame_id == lhs.frame_id) &&
+        (rhs.position_body == lhs.position_body) &&
+        (rhs.q == lhs.q) &&
+        (rhs.speed_body == lhs.speed_body) &&
+        (rhs.angular_velocity_body == lhs.angular_velocity_body) &&
+        (rhs.pose_covariance == lhs.pose_covariance) &&
+        (rhs.velocity_covariance == lhs.velocity_covariance) &&
+        (rhs.reset_counter == lhs.reset_counter) &&
+        (rhs.estimator_type == lhs.estimator_type) &&
+        (rhs.quality_percent == lhs.quality_percent);
 }
 
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Odometry const& odometry)
 {
     str << std::setprecision(15);
-    str << "odometry:" << '\n' << "{\n";
+    str << "odometry:" << '\n'
+        << "{\n";
     str << "    time_usec: " << odometry.time_usec << '\n';
     str << "    frame_id: " << odometry.frame_id << '\n';
     str << "    position_body: " << odometry.position_body << '\n';
@@ -333,6 +372,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Odometry const&
     str << '}';
     return str;
 }
+
+
 
 MAVSDK_PUBLIC std::string_view to_string(Mocap::Result const& result)
 {
@@ -358,5 +399,8 @@ MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Mocap::Result const& r
 {
     return str << to_string(result);
 }
+
+
+
 
 } // namespace mavsdk
