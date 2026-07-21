@@ -18,6 +18,7 @@ from mavsdk.plugins.camera_server import (
     Position,
     Quaternion,
     CaptureInfo,
+    CameraSource,
     StorageInformation,
     CaptureStatus,
     TrackPoint,
@@ -358,6 +359,48 @@ class CameraServerAsync:
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, lambda: self._plugin.respond_set_mode(set_mode_feedback)
+        )
+
+    async def subscribe_set_source(self) -> AsyncGenerator[CameraSource, None]:
+        """
+        Subscribe to set camera source requests. Each request received should be responded to using RespondSetSource
+
+        Yields
+        ------
+        camera_source : CameraSource
+             The next update
+        """
+        loop = asyncio.get_running_loop()
+        queue: asyncio.Queue = asyncio.Queue()
+
+        def callback(data, _user_data):
+            loop.call_soon_threadsafe(queue.put_nowait, data)
+
+        handle = self._plugin.subscribe_set_source(callback)
+        self._subscription_handles[id(queue)] = handle
+        try:
+            while True:
+                yield await queue.get()
+        finally:
+            if id(queue) in self._subscription_handles:
+                self._subscription_handles.pop(id(queue))
+                self._plugin.unsubscribe_set_source(handle)
+
+    async def respond_set_source(self, set_source_feedback):
+        """
+        Respond to set camera source from SubscribeSetSource.
+
+        Parameters
+        ----------
+        set_source_feedback : CameraFeedback
+        Raises
+        ------
+        CameraServerError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.respond_set_source(set_source_feedback)
         )
 
     async def subscribe_storage_information(self) -> AsyncGenerator[int, None]:

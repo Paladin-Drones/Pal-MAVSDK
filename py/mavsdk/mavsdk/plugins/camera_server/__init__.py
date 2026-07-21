@@ -22,6 +22,7 @@ from .camera_server import VideoStreaming
 from .camera_server import Position
 from .camera_server import Quaternion
 from .camera_server import CaptureInfo
+from .camera_server import CameraSource
 from .camera_server import StorageInformation
 from .camera_server import CaptureStatus
 from .camera_server import TrackPoint
@@ -38,6 +39,7 @@ __all__ = [
     "Position",
     "Quaternion",
     "CaptureInfo",
+    "CameraSource",
     "StorageInformation",
     "CaptureStatus",
     "TrackPoint",

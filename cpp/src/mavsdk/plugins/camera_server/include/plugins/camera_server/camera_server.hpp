@@ -292,6 +292,57 @@ public:
 
 
 
+    /**
+     * @brief Camera source message
+     */
+    struct CameraSource {
+        
+        /**
+     * @brief Camera source type.
+     */
+    enum class Source {
+        Default, /**< @brief Default camera source. */
+        Rgb, /**< @brief RGB camera source. */
+        Ir, /**< @brief IR camera source. */
+        Ndvi, /**< @brief NDVI camera source. */
+    };
+
+    /**
+     * @brief Convert `CameraServer::Source` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(CameraServer::CameraSource::Source const& source);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::Source`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, CameraServer::CameraSource::Source const& source);
+        
+        Source primary_source{}; /**< @brief Primary Source. */
+        Source secondary_source{}; /**< @brief Secondary Source. If non-zero the second source will be displayed as picture-in-picture. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::CameraSource` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const CameraServer::CameraSource& lhs, const CameraServer::CameraSource& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::CameraSource`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, CameraServer::CameraSource const& camera_source);
+
+
+
+
+
 
     /**
      * @brief Information about the camera storage.
@@ -828,6 +879,51 @@ public:
      
      */
     Result respond_set_mode(CameraFeedback set_mode_feedback) const;
+
+
+
+
+        
+
+    /**
+     * @brief Callback type for subscribe_set_source.
+     */
+    using SetSourceCallback = std::function<void(CameraSource)>;
+
+    /**
+     * @brief Handle type for subscribe_set_source.
+     */
+    using SetSourceHandle = Handle<CameraSource>;
+
+    /**
+     * @brief Subscribe to set camera source requests. Each request received should be responded to using RespondSetSource
+     */
+    SetSourceHandle subscribe_set_source(const SetSourceCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_set_source
+     */
+    void unsubscribe_set_source(SetSourceHandle handle);
+
+        
+
+
+
+
+
+
+
+
+    /**
+     * @brief Respond to set camera source from SubscribeSetSource.
+     *
+     * This function is blocking.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result respond_set_source(CameraFeedback set_source_feedback) const;
 
 
 

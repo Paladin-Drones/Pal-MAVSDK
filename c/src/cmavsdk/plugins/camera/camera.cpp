@@ -742,6 +742,73 @@ void mavsdk_camera_possible_setting_options_update_array_destroy(
 
 
 
+static mavsdk::Camera::CameraSource::Source
+translate_camera_source_source_from_c(mavsdk_camera_camera_source_source_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_DEFAULT:
+            return mavsdk::Camera::CameraSource::Source::Default;
+        case MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_RGB:
+            return mavsdk::Camera::CameraSource::Source::Rgb;
+        case MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_IR:
+            return mavsdk::Camera::CameraSource::Source::Ir;
+        case MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_NDVI:
+            return mavsdk::Camera::CameraSource::Source::Ndvi;
+    }
+    return mavsdk::Camera::CameraSource::Source::Default;
+}
+
+
+static mavsdk::Camera::CameraSource
+translate_camera_source_from_c(const mavsdk_camera_camera_source_t& c_struct) {
+    mavsdk::Camera::CameraSource cpp_struct{};
+    cpp_struct.primary_source = translate_camera_source_source_from_c(c_struct.primary_source);
+    cpp_struct.secondary_source = translate_camera_source_source_from_c(c_struct.secondary_source);
+    return cpp_struct;
+}
+
+
+static mavsdk_camera_camera_source_source_t
+translate_camera_source_source_to_c(mavsdk::Camera::CameraSource::Source cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::Camera::CameraSource::Source::Default:
+            return MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_DEFAULT;
+        case mavsdk::Camera::CameraSource::Source::Rgb:
+            return MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_RGB;
+        case mavsdk::Camera::CameraSource::Source::Ir:
+            return MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_IR;
+        case mavsdk::Camera::CameraSource::Source::Ndvi:
+            return MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_NDVI;
+    }
+    return MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_DEFAULT;
+}
+
+static mavsdk_camera_camera_source_t
+translate_camera_source_to_c(const mavsdk::Camera::CameraSource& cpp_struct) {
+    mavsdk_camera_camera_source_t c_struct{};
+    c_struct.primary_source = translate_camera_source_source_to_c(cpp_struct.primary_source);
+    c_struct.secondary_source = translate_camera_source_source_to_c(cpp_struct.secondary_source);
+    return c_struct;
+}
+
+void mavsdk_camera_camera_source_destroy(
+    mavsdk_camera_camera_source_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_camera_source_array_destroy(
+    mavsdk_camera_camera_source_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_camera_source_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
+
+
 static mavsdk::Camera::Position
 translate_position_from_c(const mavsdk_camera_position_t& c_struct) {
     mavsdk::Camera::Position cpp_struct{};
@@ -1396,6 +1463,44 @@ mavsdk_camera_set_mode(
     auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
 
     auto ret_value = wrapper->cpp_plugin->set_mode(        component_id,        translate_mode_from_c(mode));
+
+    return translate_result(ret_value);
+}
+
+// SetSource async
+void mavsdk_camera_set_source_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_camera_source_t camera_source,
+    mavsdk_camera_set_source_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    wrapper->cpp_plugin->set_source_async(
+        component_id,
+        translate_camera_source_from_c(camera_source),
+        [callback, user_data](
+            mavsdk::Camera::Result result) {
+                if (callback) {
+                    callback(
+                        translate_result(result),
+                        user_data);
+                }
+        });
+}
+
+
+// SetSource sync
+mavsdk_camera_result_t
+mavsdk_camera_set_source(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_camera_source_t camera_source)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_wrapper*>(camera);
+
+    auto ret_value = wrapper->cpp_plugin->set_source(        component_id,        translate_camera_source_from_c(camera_source));
 
     return translate_result(ret_value);
 }

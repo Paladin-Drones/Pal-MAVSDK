@@ -30,6 +30,7 @@ from mavsdk.plugins.camera import (
     StorageUpdate,
     CurrentSettingsUpdate,
     PossibleSettingOptionsUpdate,
+    CameraSource,
     Position,
     Quaternion,
     EulerAngle,
@@ -207,6 +208,24 @@ class CameraAsync:
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(
             None, lambda: self._plugin.set_mode(component_id, mode)
+        )
+
+    async def set_source(self, component_id, camera_source):
+        """
+        Set camera source
+
+        Parameters
+        ----------
+        component_id : int
+        camera_source : CameraSource
+        Raises
+        ------
+        CameraError
+            If the request fails. The error contains the reason for the failure.
+        """
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(
+            None, lambda: self._plugin.set_source(component_id, camera_source)
         )
 
     async def list_photos(self, component_id, photos_range):

@@ -624,6 +624,59 @@ typedef enum {
 
 
 /**
+ * @brief Camera source type.
+ */
+typedef enum {
+    /**  Default camera source. */
+    MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_DEFAULT = 0,
+    /**  RGB camera source. */
+    MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_RGB = 1,
+    /**  IR camera source. */
+    MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_IR = 2,
+    /**  NDVI camera source. */
+    MAVSDK_CAMERA_CAMERA_SOURCE_SOURCE_NDVI = 3,
+} mavsdk_camera_camera_source_source_t;
+
+/**
+ * @brief Camera source message
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_camera_source_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Primary Source. */
+    mavsdk_camera_camera_source_source_t primary_source;
+    /**  Secondary Source. If non-zero the second source will be displayed as picture-in-picture. */
+    mavsdk_camera_camera_source_source_t secondary_source;
+} mavsdk_camera_camera_source_t;
+
+/**
+ * @brief Destroy a camera_source struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_camera_camera_source_destroy(
+    mavsdk_camera_camera_source_t* target);
+
+/**
+ * @brief Destroy an array of camera_source structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_camera_source_array_destroy(
+    mavsdk_camera_camera_source_t** array,
+    size_t size);
+
+/**
  * @brief Position type in global coordinates.
  *
  * @note This struct may contain dynamically allocated memory. Always call
@@ -986,6 +1039,7 @@ typedef void (*mavsdk_camera_stop_photo_interval_callback_t)(const mavsdk_camera
 typedef void (*mavsdk_camera_start_video_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_stop_video_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_set_mode_callback_t)(const mavsdk_camera_result_t result, void* user_data);
+typedef void (*mavsdk_camera_set_source_callback_t)(const mavsdk_camera_result_t result, void* user_data);
 typedef void (*mavsdk_camera_list_photos_callback_t)(const mavsdk_camera_result_t result, const mavsdk_camera_capture_info_t* capture_infos, size_t capture_infos_size, void* user_data);
 typedef void (*mavsdk_camera_camera_list_callback_t)(const mavsdk_camera_camera_list_t camera_list, void* user_data);
 typedef void (*mavsdk_camera_mode_callback_t)(const mavsdk_camera_mode_update_t update, void* user_data);
@@ -1246,6 +1300,42 @@ mavsdk_camera_set_mode(
     mavsdk_camera_t camera,
     int32_t component_id,
     mavsdk_camera_mode_t mode);
+
+
+/**
+ * @brief Set camera source
+ *
+ * @param camera The camera instance.
+ * @param component_id  Component ID
+ * 
+ * @param camera_source  Camera source to set
+ * 
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_set_source_async(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_camera_source_t camera_source,
+    mavsdk_camera_set_source_callback_t callback,
+    void* user_data);
+
+
+/**
+ * @brief Get the current set source (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param set_source_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_result_t
+mavsdk_camera_set_source(
+    mavsdk_camera_t camera,
+    int32_t component_id,
+    mavsdk_camera_camera_source_t camera_source);
 
 
 /**

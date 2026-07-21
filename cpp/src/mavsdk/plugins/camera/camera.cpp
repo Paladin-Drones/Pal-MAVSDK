@@ -21,6 +21,7 @@ using StorageUpdate = Camera::StorageUpdate;
 using CurrentSettingsUpdate = Camera::CurrentSettingsUpdate;
 using PossibleSettingOptionsUpdate = Camera::PossibleSettingOptionsUpdate;
 
+using CameraSource = Camera::CameraSource;
 using Position = Camera::Position;
 using Quaternion = Camera::Quaternion;
 using EulerAngle = Camera::EulerAngle;
@@ -137,6 +138,20 @@ void Camera::set_mode_async(int32_t component_id, Mode mode, const ResultCallbac
 Camera::Result Camera::set_mode(int32_t component_id, Mode mode) const
 {
     return _impl->set_mode(component_id, mode);
+}
+
+
+
+void Camera::set_source_async(int32_t component_id, CameraSource camera_source, const ResultCallback callback)
+{
+    _impl->set_source_async(component_id, camera_source, callback);
+}
+
+
+
+Camera::Result Camera::set_source(int32_t component_id, CameraSource camera_source) const
+{
+    return _impl->set_source(component_id, camera_source);
 }
 
 
@@ -912,6 +927,46 @@ MAVSDK_PUBLIC std::string_view to_string(Camera::Result const& result)
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
 {
     return str << to_string(result);
+}
+
+
+
+MAVSDK_PUBLIC std::string_view to_string(Camera::CameraSource::Source const& source)
+{
+    switch (source) {
+        case Camera::CameraSource::Source::Default:
+            return "Default";
+        case Camera::CameraSource::Source::Rgb:
+            return "Rgb";
+        case Camera::CameraSource::Source::Ir:
+            return "Ir";
+        case Camera::CameraSource::Source::Ndvi:
+            return "Ndvi";
+        default:
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::CameraSource::Source const& source)
+{
+    return str << to_string(source);
+}
+MAVSDK_PUBLIC bool operator==(const Camera::CameraSource& lhs, const Camera::CameraSource& rhs)
+{
+    return
+        (rhs.primary_source == lhs.primary_source) &&
+        (rhs.secondary_source == lhs.secondary_source);
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::CameraSource const& camera_source)
+{
+    str << std::setprecision(15);
+    str << "camera_source:" << '\n'
+        << "{\n";
+    str << "    primary_source: " << camera_source.primary_source << '\n';
+    str << "    secondary_source: " << camera_source.secondary_source << '\n';
+    str << '}';
+    return str;
 }
 
 

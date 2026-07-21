@@ -15,6 +15,7 @@ using Position = CameraServer::Position;
 using Quaternion = CameraServer::Quaternion;
 using CaptureInfo = CameraServer::CaptureInfo;
 
+using CameraSource = CameraServer::CameraSource;
 using StorageInformation = CameraServer::StorageInformation;
 using CaptureStatus = CameraServer::CaptureStatus;
 using TrackPoint = CameraServer::TrackPoint;
@@ -202,6 +203,31 @@ void CameraServer::unsubscribe_set_mode(SetModeHandle handle)
 CameraServer::Result CameraServer::respond_set_mode(CameraFeedback set_mode_feedback) const
 {
     return _impl->respond_set_mode(set_mode_feedback);
+}
+
+
+
+    
+CameraServer::SetSourceHandle CameraServer::subscribe_set_source(const SetSourceCallback& callback)
+{
+    return _impl->subscribe_set_source(callback);
+}
+
+void CameraServer::unsubscribe_set_source(SetSourceHandle handle)
+{
+    _impl->unsubscribe_set_source(handle);
+}
+    
+
+
+
+
+
+
+
+CameraServer::Result CameraServer::respond_set_source(CameraFeedback set_source_feedback) const
+{
+    return _impl->respond_set_source(set_source_feedback);
 }
 
 
@@ -662,6 +688,46 @@ MAVSDK_PUBLIC std::string_view to_string(CameraServer::Result const& result)
 MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result)
 {
     return str << to_string(result);
+}
+
+
+
+MAVSDK_PUBLIC std::string_view to_string(CameraServer::CameraSource::Source const& source)
+{
+    switch (source) {
+        case CameraServer::CameraSource::Source::Default:
+            return "Default";
+        case CameraServer::CameraSource::Source::Rgb:
+            return "Rgb";
+        case CameraServer::CameraSource::Source::Ir:
+            return "Ir";
+        case CameraServer::CameraSource::Source::Ndvi:
+            return "Ndvi";
+        default:
+            return "Unknown";
+    }
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, CameraServer::CameraSource::Source const& source)
+{
+    return str << to_string(source);
+}
+MAVSDK_PUBLIC bool operator==(const CameraServer::CameraSource& lhs, const CameraServer::CameraSource& rhs)
+{
+    return
+        (rhs.primary_source == lhs.primary_source) &&
+        (rhs.secondary_source == lhs.secondary_source);
+}
+
+MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, CameraServer::CameraSource const& camera_source)
+{
+    str << std::setprecision(15);
+    str << "camera_source:" << '\n'
+        << "{\n";
+    str << "    primary_source: " << camera_source.primary_source << '\n';
+    str << "    secondary_source: " << camera_source.secondary_source << '\n';
+    str << '}';
+    return str;
 }
 
 

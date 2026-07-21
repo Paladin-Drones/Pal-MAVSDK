@@ -511,6 +511,81 @@ public:
 
 
 
+    static rpc::camera_server::CameraSource::Source translateToRpcSource(const mavsdk::CameraServer::CameraSource::Source& source)
+    {
+        switch (source) {
+            default:
+                LogErr("Unknown source enum value: {}", static_cast<int>(source));
+            // FALLTHROUGH
+            case mavsdk::CameraServer::CameraSource::Source::Default:
+                return rpc::camera_server::CameraSource_Source_SOURCE_DEFAULT;
+            case mavsdk::CameraServer::CameraSource::Source::Rgb:
+                return rpc::camera_server::CameraSource_Source_SOURCE_RGB;
+            case mavsdk::CameraServer::CameraSource::Source::Ir:
+                return rpc::camera_server::CameraSource_Source_SOURCE_IR;
+            case mavsdk::CameraServer::CameraSource::Source::Ndvi:
+                return rpc::camera_server::CameraSource_Source_SOURCE_NDVI;
+        }
+    }
+
+    static mavsdk::CameraServer::CameraSource::Source translateFromRpcSource(const rpc::camera_server::CameraSource::Source source)
+    {
+        switch (source) {
+            default:
+                LogErr("Unknown source enum value: {}", static_cast<int>(source));
+            // FALLTHROUGH
+            case rpc::camera_server::CameraSource_Source_SOURCE_DEFAULT:
+                return mavsdk::CameraServer::CameraSource::Source::Default;
+            case rpc::camera_server::CameraSource_Source_SOURCE_RGB:
+                return mavsdk::CameraServer::CameraSource::Source::Rgb;
+            case rpc::camera_server::CameraSource_Source_SOURCE_IR:
+                return mavsdk::CameraServer::CameraSource::Source::Ir;
+            case rpc::camera_server::CameraSource_Source_SOURCE_NDVI:
+                return mavsdk::CameraServer::CameraSource::Source::Ndvi;
+        }
+    }
+
+
+    static std::unique_ptr<rpc::camera_server::CameraSource> translateToRpcCameraSource(const mavsdk::CameraServer::CameraSource &camera_source)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::CameraSource>();
+
+
+            
+                
+        rpc_obj->set_primary_source(translateToRpcSource(camera_source.primary_source));
+                
+            
+        
+            
+                
+        rpc_obj->set_secondary_source(translateToRpcSource(camera_source.secondary_source));
+                
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::CameraSource translateFromRpcCameraSource(const rpc::camera_server::CameraSource& camera_source)
+    {
+        mavsdk::CameraServer::CameraSource obj;
+
+
+            
+        obj.primary_source = translateFromRpcSource(camera_source.primary_source());
+            
+        
+            
+        obj.secondary_source = translateFromRpcSource(camera_source.secondary_source());
+            
+        
+        return obj;
+    }
+
+
+
+
     static rpc::camera_server::StorageInformation::StorageStatus translateToRpcStorageStatus(const mavsdk::CameraServer::StorageInformation::StorageStatus& storage_status)
     {
         switch (storage_status) {
@@ -1464,6 +1539,83 @@ public:
             
         
         auto result = _lazy_plugin.maybe_plugin()->respond_set_mode(translateFromRpcCameraFeedback(request->set_mode_feedback()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeSetSource(grpc::ServerContext* /* context */, const mavsdk::rpc::camera_server::SubscribeSetSourceRequest* /* request */, grpc::ServerWriter<rpc::camera_server::SetSourceResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::SetSourceHandle handle = _lazy_plugin.maybe_plugin()->subscribe_set_source(
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](const mavsdk::CameraServer::CameraSource set_source) {
+
+            rpc::camera_server::SetSourceResponse rpc_response;
+        
+            rpc_response.set_allocated_camera_source(translateToRpcCameraSource(set_source).release());
+        
+
+        
+
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                _lazy_plugin.maybe_plugin()->unsubscribe_set_source(handle);
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondSetSource(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondSetSourceRequest* request,
+        rpc::camera_server::RespondSetSourceResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                
+                // For server plugins, this should never happen, they should always be constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("RespondSetSource sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->respond_set_source(translateFromRpcCameraFeedback(request->set_source_feedback()));
         
 
         

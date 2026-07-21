@@ -561,6 +561,57 @@ public:
 
 
 
+
+    /**
+     * @brief Camera source message
+     */
+    struct CameraSource {
+        
+        /**
+     * @brief Camera source type.
+     */
+    enum class Source {
+        Default, /**< @brief Default camera source. */
+        Rgb, /**< @brief RGB camera source. */
+        Ir, /**< @brief IR camera source. */
+        Ndvi, /**< @brief NDVI camera source. */
+    };
+
+    /**
+     * @brief Convert `Camera::Source` to string.
+     *
+     * @return A string representation of the enum.
+     */
+    friend MAVSDK_PUBLIC std::string_view to_string(Camera::CameraSource::Source const& source);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::Source`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::CameraSource::Source const& source);
+        
+        Source primary_source{}; /**< @brief Primary Source. */
+        Source secondary_source{}; /**< @brief Secondary Source. If non-zero the second source will be displayed as picture-in-picture. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::CameraSource` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend MAVSDK_PUBLIC bool operator==(const Camera::CameraSource& lhs, const Camera::CameraSource& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::CameraSource`.
+     *
+     * @return A reference to the stream.
+     */
+    friend MAVSDK_PUBLIC std::ostream& operator<<(std::ostream& str, Camera::CameraSource const& camera_source);
+
+
+
+
     /**
      * @brief Position type in global coordinates.
      */
@@ -917,6 +968,29 @@ public:
      
      */
     Result set_mode(int32_t component_id, Mode mode) const;
+
+
+
+
+    /**
+     * @brief Set camera source
+     *
+     * This function is non-blocking. See 'set_source' for the blocking counterpart.
+     */
+    void set_source_async(int32_t component_id, CameraSource camera_source, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Set camera source
+     *
+     * This function is blocking. See 'set_source_async' for the non-blocking counterpart.
+     *
+     
+     * @return Result of request.
+     
+     */
+    Result set_source(int32_t component_id, CameraSource camera_source) const;
 
 
 

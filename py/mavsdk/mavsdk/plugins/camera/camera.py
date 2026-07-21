@@ -215,6 +215,18 @@ class PossibleSettingOptionsUpdateCStruct(ctypes.Structure):
     ]
 
 
+class CameraSourceCStruct(ctypes.Structure):
+    """
+    Internal C structure for CameraSource.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("primary_source", ctypes.c_int),
+        ("secondary_source", ctypes.c_int),
+    ]
+
+
 class PositionCStruct(ctypes.Structure):
     """
     Internal C structure for Position.
@@ -829,6 +841,45 @@ class PossibleSettingOptionsUpdate:
         return f"PossibleSettingOptionsUpdate({', '.join(fields)})"
 
 
+class CameraSource:
+    """
+    Camera source message
+    """
+
+    class Source(IntEnum):
+        """Camera source type."""
+
+        DEFAULT = 0
+        RGB = 1
+        IR = 2
+        NDVI = 3
+
+    def __init__(self, primary_source=None, secondary_source=None):
+        self.primary_source = primary_source
+        self.secondary_source = secondary_source
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        instance.primary_source = CameraSource.Source(c_struct.primary_source)
+        instance.secondary_source = CameraSource.Source(c_struct.secondary_source)
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = CameraSourceCStruct()
+        c_struct.primary_source = int(self.primary_source)
+        c_struct.secondary_source = int(self.secondary_source)
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"primary_source={self.primary_source}")
+        fields.append(f"secondary_source={self.secondary_source}")
+        return f"CameraSource({', '.join(fields)})"
+
+
 class Position:
     """
     Position type in global coordinates.
@@ -1385,6 +1436,41 @@ class Camera:
         result = CameraResult(result_code)
         if result != CameraResult.SUCCESS:
             raise Exception(f"set_mode failed: {result}")
+
+        return result
+
+    def set_source_async(
+        self, component_id, camera_source, callback: Callable, user_data: Any = None
+    ):
+        """Set camera source"""
+
+        def c_callback(result, ud):
+            try:
+                py_result = CameraResult(result)
+
+                callback(py_result, user_data)
+
+            except Exception as e:
+                print(f"Error in set_source callback: {e}")
+
+        cb = SetSourceCallback(c_callback)
+        self._callbacks.append(cb)
+
+        self._lib.mavsdk_camera_set_source_async(
+            self._handle, component_id, camera_source, cb, None
+        )
+
+    def set_source(self, component_id, camera_source):
+        """Get set_source (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_set_source(
+            self._handle,
+            component_id,
+            camera_source.to_c_struct(),
+        )
+        result = CameraResult(result_code)
+        if result != CameraResult.SUCCESS:
+            raise Exception(f"set_source failed: {result}")
 
         return result
 
@@ -2279,6 +2365,7 @@ StopPhotoIntervalCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p
 StartVideoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 StopVideoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 SetModeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetSourceCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
 ListPhotosCallback = ctypes.CFUNCTYPE(
     None,
     ctypes.c_int,
@@ -2372,6 +2459,11 @@ _cmavsdk_lib.mavsdk_camera_possible_setting_options_update_destroy.argtypes = [
     ctypes.POINTER(PossibleSettingOptionsUpdateCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_possible_setting_options_update_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_camera_source_destroy.argtypes = [
+    ctypes.POINTER(CameraSourceCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_camera_source_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_position_destroy.argtypes = [ctypes.POINTER(PositionCStruct)]
 _cmavsdk_lib.mavsdk_camera_position_destroy.restype = None
@@ -2512,6 +2604,23 @@ _cmavsdk_lib.mavsdk_camera_set_mode.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_camera_set_mode.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_set_source_async.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    CameraSourceCStruct,
+    SetSourceCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_set_source_async.restype = None
+
+_cmavsdk_lib.mavsdk_camera_set_source.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int32,
+    CameraSourceCStruct,
+]
+
+_cmavsdk_lib.mavsdk_camera_set_source.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_list_photos_async.argtypes = [
     ctypes.c_void_p,
     ctypes.c_int32,

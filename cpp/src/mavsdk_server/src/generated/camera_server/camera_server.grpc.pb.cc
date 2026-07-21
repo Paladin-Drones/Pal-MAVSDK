@@ -39,6 +39,8 @@ static const char* CameraServerService_method_names[] = {
   "/mavsdk.rpc.camera_server.CameraServerService/RespondStopVideoStreaming",
   "/mavsdk.rpc.camera_server.CameraServerService/SubscribeSetMode",
   "/mavsdk.rpc.camera_server.CameraServerService/RespondSetMode",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeSetSource",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondSetSource",
   "/mavsdk.rpc.camera_server.CameraServerService/SubscribeStorageInformation",
   "/mavsdk.rpc.camera_server.CameraServerService/RespondStorageInformation",
   "/mavsdk.rpc.camera_server.CameraServerService/SubscribeCaptureStatus",
@@ -87,30 +89,32 @@ CameraServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>
   , rpcmethod_RespondStopVideoStreaming_(CameraServerService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeSetMode_(CameraServerService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_RespondSetMode_(CameraServerService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeStorageInformation_(CameraServerService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondStorageInformation_(CameraServerService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeCaptureStatus_(CameraServerService_method_names[17], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondCaptureStatus_(CameraServerService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeFormatStorage_(CameraServerService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondFormatStorage_(CameraServerService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeResetSettings_(CameraServerService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondResetSettings_(CameraServerService_method_names[22], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeZoomInStart_(CameraServerService_method_names[23], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondZoomInStart_(CameraServerService_method_names[24], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeZoomOutStart_(CameraServerService_method_names[25], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondZoomOutStart_(CameraServerService_method_names[26], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeZoomStop_(CameraServerService_method_names[27], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondZoomStop_(CameraServerService_method_names[28], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeZoomRange_(CameraServerService_method_names[29], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondZoomRange_(CameraServerService_method_names[30], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetTrackingRectangleStatus_(CameraServerService_method_names[31], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetTrackingOffStatus_(CameraServerService_method_names[32], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeTrackingPointCommand_(CameraServerService_method_names[33], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeTrackingRectangleCommand_(CameraServerService_method_names[34], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_SubscribeTrackingOffCommand_(CameraServerService_method_names[35], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_RespondTrackingPointCommand_(CameraServerService_method_names[36], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_RespondTrackingRectangleCommand_(CameraServerService_method_names[37], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_RespondTrackingOffCommand_(CameraServerService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeSetSource_(CameraServerService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondSetSource_(CameraServerService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeStorageInformation_(CameraServerService_method_names[17], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondStorageInformation_(CameraServerService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeCaptureStatus_(CameraServerService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondCaptureStatus_(CameraServerService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeFormatStorage_(CameraServerService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondFormatStorage_(CameraServerService_method_names[22], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeResetSettings_(CameraServerService_method_names[23], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondResetSettings_(CameraServerService_method_names[24], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeZoomInStart_(CameraServerService_method_names[25], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondZoomInStart_(CameraServerService_method_names[26], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeZoomOutStart_(CameraServerService_method_names[27], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondZoomOutStart_(CameraServerService_method_names[28], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeZoomStop_(CameraServerService_method_names[29], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondZoomStop_(CameraServerService_method_names[30], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeZoomRange_(CameraServerService_method_names[31], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondZoomRange_(CameraServerService_method_names[32], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTrackingRectangleStatus_(CameraServerService_method_names[33], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTrackingOffStatus_(CameraServerService_method_names[34], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeTrackingPointCommand_(CameraServerService_method_names[35], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTrackingRectangleCommand_(CameraServerService_method_names[36], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTrackingOffCommand_(CameraServerService_method_names[37], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondTrackingPointCommand_(CameraServerService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTrackingRectangleCommand_(CameraServerService_method_names[39], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTrackingOffCommand_(CameraServerService_method_names[40], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraServerService::Stub::SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::mavsdk::rpc::camera_server::SetInformationResponse* response) {
@@ -412,6 +416,45 @@ void CameraServerService::Stub::async::RespondSetMode(::grpc::ClientContext* con
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondSetModeResponse>* CameraServerService::Stub::AsyncRespondSetModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondSetModeRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncRespondSetModeRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::SetSourceResponse>* CameraServerService::Stub::SubscribeSetSourceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeSetSourceRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::SetSourceResponse>::Create(channel_.get(), rpcmethod_SubscribeSetSource_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeSetSource(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeSetSourceRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::SetSourceResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::SetSourceResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeSetSource_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::SetSourceResponse>* CameraServerService::Stub::AsyncSubscribeSetSourceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeSetSourceRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::SetSourceResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeSetSource_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::SetSourceResponse>* CameraServerService::Stub::PrepareAsyncSubscribeSetSourceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeSetSourceRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::SetSourceResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeSetSource_, context, request, false, nullptr);
+}
+
+::grpc::Status CameraServerService::Stub::RespondSetSource(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondSetSourceRequest& request, ::mavsdk::rpc::camera_server::RespondSetSourceResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondSetSourceRequest, ::mavsdk::rpc::camera_server::RespondSetSourceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondSetSource_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondSetSource(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondSetSourceRequest* request, ::mavsdk::rpc::camera_server::RespondSetSourceResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondSetSourceRequest, ::mavsdk::rpc::camera_server::RespondSetSourceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondSetSource_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondSetSource(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondSetSourceRequest* request, ::mavsdk::rpc::camera_server::RespondSetSourceResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondSetSource_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondSetSourceResponse>* CameraServerService::Stub::PrepareAsyncRespondSetSourceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondSetSourceRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondSetSourceResponse, ::mavsdk::rpc::camera_server::RespondSetSourceRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondSetSource_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondSetSourceResponse>* CameraServerService::Stub::AsyncRespondSetSourceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondSetSourceRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondSetSourceRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -1045,6 +1088,26 @@ CameraServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraServerService_method_names[15],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeSetSourceRequest, ::mavsdk::rpc::camera_server::SetSourceResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeSetSourceRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::SetSourceResponse>* writer) {
+               return service->SubscribeSetSource(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[16],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondSetSourceRequest, ::mavsdk::rpc::camera_server::RespondSetSourceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondSetSourceRequest* req,
+             ::mavsdk::rpc::camera_server::RespondSetSourceResponse* resp) {
+               return service->RespondSetSource(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[17],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeStorageInformationRequest, ::mavsdk::rpc::camera_server::StorageInformationResponse>(
           [](CameraServerService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -1053,7 +1116,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeStorageInformation(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[16],
+      CameraServerService_method_names[18],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondStorageInformationRequest, ::mavsdk::rpc::camera_server::RespondStorageInformationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1063,7 +1126,7 @@ CameraServerService::Service::Service() {
                return service->RespondStorageInformation(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[17],
+      CameraServerService_method_names[19],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeCaptureStatusRequest, ::mavsdk::rpc::camera_server::CaptureStatusResponse>(
           [](CameraServerService::Service* service,
@@ -1073,7 +1136,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeCaptureStatus(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[18],
+      CameraServerService_method_names[20],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondCaptureStatusRequest, ::mavsdk::rpc::camera_server::RespondCaptureStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1083,7 +1146,7 @@ CameraServerService::Service::Service() {
                return service->RespondCaptureStatus(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[19],
+      CameraServerService_method_names[21],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeFormatStorageRequest, ::mavsdk::rpc::camera_server::FormatStorageResponse>(
           [](CameraServerService::Service* service,
@@ -1093,7 +1156,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeFormatStorage(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[20],
+      CameraServerService_method_names[22],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondFormatStorageRequest, ::mavsdk::rpc::camera_server::RespondFormatStorageResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1103,7 +1166,7 @@ CameraServerService::Service::Service() {
                return service->RespondFormatStorage(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[21],
+      CameraServerService_method_names[23],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeResetSettingsRequest, ::mavsdk::rpc::camera_server::ResetSettingsResponse>(
           [](CameraServerService::Service* service,
@@ -1113,7 +1176,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeResetSettings(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[22],
+      CameraServerService_method_names[24],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondResetSettingsRequest, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1123,7 +1186,7 @@ CameraServerService::Service::Service() {
                return service->RespondResetSettings(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[23],
+      CameraServerService_method_names[25],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest, ::mavsdk::rpc::camera_server::ZoomInStartResponse>(
           [](CameraServerService::Service* service,
@@ -1133,7 +1196,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeZoomInStart(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[24],
+      CameraServerService_method_names[26],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondZoomInStartRequest, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1143,7 +1206,7 @@ CameraServerService::Service::Service() {
                return service->RespondZoomInStart(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[25],
+      CameraServerService_method_names[27],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest, ::mavsdk::rpc::camera_server::ZoomOutStartResponse>(
           [](CameraServerService::Service* service,
@@ -1153,7 +1216,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeZoomOutStart(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[26],
+      CameraServerService_method_names[28],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1163,7 +1226,7 @@ CameraServerService::Service::Service() {
                return service->RespondZoomOutStart(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[27],
+      CameraServerService_method_names[29],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest, ::mavsdk::rpc::camera_server::ZoomStopResponse>(
           [](CameraServerService::Service* service,
@@ -1173,7 +1236,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeZoomStop(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[28],
+      CameraServerService_method_names[30],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondZoomStopRequest, ::mavsdk::rpc::camera_server::RespondZoomStopResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1183,7 +1246,7 @@ CameraServerService::Service::Service() {
                return service->RespondZoomStop(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[29],
+      CameraServerService_method_names[31],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest, ::mavsdk::rpc::camera_server::ZoomRangeResponse>(
           [](CameraServerService::Service* service,
@@ -1193,7 +1256,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeZoomRange(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[30],
+      CameraServerService_method_names[32],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondZoomRangeRequest, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1203,7 +1266,7 @@ CameraServerService::Service::Service() {
                return service->RespondZoomRange(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[31],
+      CameraServerService_method_names[33],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1213,7 +1276,7 @@ CameraServerService::Service::Service() {
                return service->SetTrackingRectangleStatus(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[32],
+      CameraServerService_method_names[34],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1223,7 +1286,7 @@ CameraServerService::Service::Service() {
                return service->SetTrackingOffStatus(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[33],
+      CameraServerService_method_names[35],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>(
           [](CameraServerService::Service* service,
@@ -1233,7 +1296,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeTrackingPointCommand(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[34],
+      CameraServerService_method_names[36],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>(
           [](CameraServerService::Service* service,
@@ -1243,7 +1306,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeTrackingRectangleCommand(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[35],
+      CameraServerService_method_names[37],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>(
           [](CameraServerService::Service* service,
@@ -1253,7 +1316,7 @@ CameraServerService::Service::Service() {
                return service->SubscribeTrackingOffCommand(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[36],
+      CameraServerService_method_names[38],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1263,7 +1326,7 @@ CameraServerService::Service::Service() {
                return service->RespondTrackingPointCommand(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[37],
+      CameraServerService_method_names[39],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1273,7 +1336,7 @@ CameraServerService::Service::Service() {
                return service->RespondTrackingRectangleCommand(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      CameraServerService_method_names[38],
+      CameraServerService_method_names[40],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](CameraServerService::Service* service,
@@ -1386,6 +1449,20 @@ CameraServerService::Service::~Service() {
 }
 
 ::grpc::Status CameraServerService::Service::RespondSetMode(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondSetModeRequest* request, ::mavsdk::rpc::camera_server::RespondSetModeResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeSetSource(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeSetSourceRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::SetSourceResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondSetSource(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondSetSourceRequest* request, ::mavsdk::rpc::camera_server::RespondSetSourceResponse* response) {
   (void) context;
   (void) request;
   (void) response;

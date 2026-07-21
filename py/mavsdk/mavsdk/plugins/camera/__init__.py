@@ -34,6 +34,7 @@ from .camera import Storage
 from .camera import StorageUpdate
 from .camera import CurrentSettingsUpdate
 from .camera import PossibleSettingOptionsUpdate
+from .camera import CameraSource
 from .camera import Position
 from .camera import Quaternion
 from .camera import EulerAngle
@@ -58,6 +59,7 @@ __all__ = [
     "StorageUpdate",
     "CurrentSettingsUpdate",
     "PossibleSettingOptionsUpdate",
+    "CameraSource",
     "Position",
     "Quaternion",
     "EulerAngle",

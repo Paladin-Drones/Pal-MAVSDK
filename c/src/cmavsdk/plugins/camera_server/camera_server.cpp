@@ -344,6 +344,73 @@ void mavsdk_camera_server_capture_info_array_destroy(
 
 
 
+static mavsdk::CameraServer::CameraSource::Source
+translate_camera_source_source_from_c(mavsdk_camera_server_camera_source_source_t c_enum) {
+    switch(c_enum) {
+        case MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_DEFAULT:
+            return mavsdk::CameraServer::CameraSource::Source::Default;
+        case MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_RGB:
+            return mavsdk::CameraServer::CameraSource::Source::Rgb;
+        case MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_IR:
+            return mavsdk::CameraServer::CameraSource::Source::Ir;
+        case MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_NDVI:
+            return mavsdk::CameraServer::CameraSource::Source::Ndvi;
+    }
+    return mavsdk::CameraServer::CameraSource::Source::Default;
+}
+
+
+static mavsdk::CameraServer::CameraSource
+translate_camera_source_from_c(const mavsdk_camera_server_camera_source_t& c_struct) {
+    mavsdk::CameraServer::CameraSource cpp_struct{};
+    cpp_struct.primary_source = translate_camera_source_source_from_c(c_struct.primary_source);
+    cpp_struct.secondary_source = translate_camera_source_source_from_c(c_struct.secondary_source);
+    return cpp_struct;
+}
+
+
+static mavsdk_camera_server_camera_source_source_t
+translate_camera_source_source_to_c(mavsdk::CameraServer::CameraSource::Source cpp_enum) {
+    switch(cpp_enum) {
+        case mavsdk::CameraServer::CameraSource::Source::Default:
+            return MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_DEFAULT;
+        case mavsdk::CameraServer::CameraSource::Source::Rgb:
+            return MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_RGB;
+        case mavsdk::CameraServer::CameraSource::Source::Ir:
+            return MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_IR;
+        case mavsdk::CameraServer::CameraSource::Source::Ndvi:
+            return MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_NDVI;
+    }
+    return MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_DEFAULT;
+}
+
+static mavsdk_camera_server_camera_source_t
+translate_camera_source_to_c(const mavsdk::CameraServer::CameraSource& cpp_struct) {
+    mavsdk_camera_server_camera_source_t c_struct{};
+    c_struct.primary_source = translate_camera_source_source_to_c(cpp_struct.primary_source);
+    c_struct.secondary_source = translate_camera_source_source_to_c(cpp_struct.secondary_source);
+    return c_struct;
+}
+
+void mavsdk_camera_server_camera_source_destroy(
+    mavsdk_camera_server_camera_source_t* target) {
+    if (!target) return;
+}
+
+void mavsdk_camera_server_camera_source_array_destroy(
+    mavsdk_camera_server_camera_source_t** array,
+    size_t size) {
+    if (!array || !*array) return;
+
+    for (size_t i = 0; i < size; i++) {
+        mavsdk_camera_server_camera_source_destroy(&(*array)[i]);
+    }
+
+    delete[] *array;
+    *array = nullptr;
+}
+
+
 static mavsdk::CameraServer::StorageInformation::StorageStatus
 translate_storage_information_storage_status_from_c(mavsdk_camera_server_storage_information_storage_status_t c_enum) {
     switch(c_enum) {
@@ -705,6 +772,7 @@ struct mavsdk_camera_server_wrapper {
     std::vector<mavsdk::CameraServer::StartVideoStreamingHandle*> start_video_streaming_handles;
     std::vector<mavsdk::CameraServer::StopVideoStreamingHandle*> stop_video_streaming_handles;
     std::vector<mavsdk::CameraServer::SetModeHandle*> set_mode_handles;
+    std::vector<mavsdk::CameraServer::SetSourceHandle*> set_source_handles;
     std::vector<mavsdk::CameraServer::StorageInformationHandle*> storage_information_handles;
     std::vector<mavsdk::CameraServer::CaptureStatusHandle*> capture_status_handles;
     std::vector<mavsdk::CameraServer::FormatStorageHandle*> format_storage_handles;
@@ -772,6 +840,11 @@ void mavsdk_camera_server_destroy(mavsdk_camera_server_t camera_server) {
             delete h;
         }
         wrapper->set_mode_handles.clear();
+        for (auto* h : wrapper->set_source_handles) {
+            wrapper->cpp_plugin->unsubscribe_set_source(std::move(*h));
+            delete h;
+        }
+        wrapper->set_source_handles.clear();
         for (auto* h : wrapper->storage_information_handles) {
             wrapper->cpp_plugin->unsubscribe_storage_information(std::move(*h));
             delete h;
@@ -1245,6 +1318,68 @@ mavsdk_camera_server_respond_set_mode(
     auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
 
     auto ret_value = wrapper->cpp_plugin->respond_set_mode(        translate_camera_feedback_from_c(set_mode_feedback));
+
+    return translate_result(ret_value);
+}
+
+// SetSource async
+mavsdk_camera_server_set_source_handle_t mavsdk_camera_server_subscribe_set_source(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_set_source_callback_t callback,
+    void* user_data)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto cpp_handle =    wrapper->cpp_plugin->subscribe_set_source(
+        [callback, user_data](
+            mavsdk::CameraServer::CameraSource value) {
+                if (callback) {
+                    callback(
+                        translate_camera_source_to_c(value),
+                        user_data);
+                }
+        });
+
+    auto cpp_handle_ptr = new mavsdk::CameraServer::SetSourceHandle(std::move(cpp_handle));
+
+    {
+        std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+        wrapper->set_source_handles.push_back(cpp_handle_ptr);
+    }
+
+    return reinterpret_cast<mavsdk_camera_server_set_source_handle_t>(cpp_handle_ptr);
+}
+
+void mavsdk_camera_server_unsubscribe_set_source(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_set_source_handle_t handle)
+{
+    if (handle) {
+        auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+        auto cpp_handle = reinterpret_cast<mavsdk::CameraServer::SetSourceHandle*>(handle);
+
+        {
+            std::lock_guard<std::mutex> lock(wrapper->handles_mutex);
+            auto& vec = wrapper->set_source_handles;
+            vec.erase(std::remove(vec.begin(), vec.end(), cpp_handle), vec.end());
+        }
+
+        wrapper->cpp_plugin->unsubscribe_set_source(std::move(*cpp_handle));
+        delete cpp_handle;
+    }
+}
+
+
+
+// RespondSetSource sync
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_set_source(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t set_source_feedback)
+{
+    auto wrapper = reinterpret_cast<mavsdk_camera_server_wrapper*>(camera_server);
+
+    auto ret_value = wrapper->cpp_plugin->respond_set_source(        translate_camera_feedback_from_c(set_source_feedback));
 
     return translate_result(ret_value);
 }

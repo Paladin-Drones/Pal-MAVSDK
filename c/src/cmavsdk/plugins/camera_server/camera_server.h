@@ -29,6 +29,7 @@ typedef struct mavsdk_camera_server_stop_video_handle_s *mavsdk_camera_server_st
 typedef struct mavsdk_camera_server_start_video_streaming_handle_s *mavsdk_camera_server_start_video_streaming_handle_t;
 typedef struct mavsdk_camera_server_stop_video_streaming_handle_s *mavsdk_camera_server_stop_video_streaming_handle_t;
 typedef struct mavsdk_camera_server_set_mode_handle_s *mavsdk_camera_server_set_mode_handle_t;
+typedef struct mavsdk_camera_server_set_source_handle_s *mavsdk_camera_server_set_source_handle_t;
 typedef struct mavsdk_camera_server_storage_information_handle_s *mavsdk_camera_server_storage_information_handle_t;
 typedef struct mavsdk_camera_server_capture_status_handle_s *mavsdk_camera_server_capture_status_handle_t;
 typedef struct mavsdk_camera_server_format_storage_handle_s *mavsdk_camera_server_format_storage_handle_t;
@@ -334,6 +335,59 @@ typedef enum {
     MAVSDK_CAMERA_SERVER_RESULT_NO_SYSTEM = 8,
 } mavsdk_camera_server_result_t;
 
+
+/**
+ * @brief Camera source type.
+ */
+typedef enum {
+    /**  Default camera source. */
+    MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_DEFAULT = 0,
+    /**  RGB camera source. */
+    MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_RGB = 1,
+    /**  IR camera source. */
+    MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_IR = 2,
+    /**  NDVI camera source. */
+    MAVSDK_CAMERA_SERVER_CAMERA_SOURCE_SOURCE_NDVI = 3,
+} mavsdk_camera_server_camera_source_source_t;
+
+/**
+ * @brief Camera source message
+ *
+ * @note This struct may contain dynamically allocated memory. Always call
+ *       mavsdk_camera_server_camera_source_destroy() when done to avoid memory leaks.
+ */
+typedef struct CMAVSDK_EXPORT {
+    /**  Primary Source. */
+    mavsdk_camera_server_camera_source_source_t primary_source;
+    /**  Secondary Source. If non-zero the second source will be displayed as picture-in-picture. */
+    mavsdk_camera_server_camera_source_source_t secondary_source;
+} mavsdk_camera_server_camera_source_t;
+
+/**
+ * @brief Destroy a camera_source struct.
+ *
+ * Frees all memory allocated by MAVSDK for this struct, including any
+ * dynamically allocated arrays or strings. Must be called to avoid memory leaks.
+ * Always call this function when done with the struct, even if it currently
+ * contains no dynamic allocations.
+ *
+ * @param target Pointer to the struct to destroy. Can be NULL (no-op).
+ */
+CMAVSDK_EXPORT void mavsdk_camera_server_camera_source_destroy(
+    mavsdk_camera_server_camera_source_t* target);
+
+/**
+ * @brief Destroy an array of camera_source structs.
+ *
+ * Frees all memory allocated for the array and its elements, including any
+ * nested dynamic allocations. Must be called to avoid memory leaks.
+ *
+ * @param array Pointer to the array pointer. Will be set to NULL after freeing.
+ * @param size Number of elements in the array.
+ */
+CMAVSDK_EXPORT void mavsdk_camera_server_camera_source_array_destroy(
+    mavsdk_camera_server_camera_source_t** array,
+    size_t size);
 
 /**
  * @brief Storage status type.
@@ -657,6 +711,7 @@ typedef void (*mavsdk_camera_server_stop_video_callback_t)(const int32_t stream_
 typedef void (*mavsdk_camera_server_start_video_streaming_callback_t)(const int32_t stream_id, void* user_data);
 typedef void (*mavsdk_camera_server_stop_video_streaming_callback_t)(const int32_t stream_id, void* user_data);
 typedef void (*mavsdk_camera_server_set_mode_callback_t)(const mavsdk_camera_server_mode_t mode, void* user_data);
+typedef void (*mavsdk_camera_server_set_source_callback_t)(const mavsdk_camera_server_camera_source_t camera_source, void* user_data);
 typedef void (*mavsdk_camera_server_storage_information_callback_t)(const int32_t storage_id, void* user_data);
 typedef void (*mavsdk_camera_server_capture_status_callback_t)(const int32_t reserved, void* user_data);
 typedef void (*mavsdk_camera_server_format_storage_callback_t)(const int32_t storage_id, void* user_data);
@@ -971,6 +1026,48 @@ mavsdk_camera_server_result_t
 mavsdk_camera_server_respond_set_mode(
     mavsdk_camera_server_t camera_server,
     mavsdk_camera_server_camera_feedback_t set_mode_feedback);
+
+
+/**
+ * @brief Subscribe to set camera source requests. Each request received should be responded to using RespondSetSource
+ *
+ * @param camera_server The camera_server instance.
+ *
+ * @param callback Function to call when new data is available.
+ * @param user_data User data to pass to the callback.
+ * @return Handle for this subscription. Use mavsdk_camera_server_unsubscribe_set_source() to unsubscribe.
+ */
+CMAVSDK_EXPORT mavsdk_camera_server_set_source_handle_t mavsdk_camera_server_subscribe_set_source(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_set_source_callback_t callback,
+    void* user_data);
+
+/**
+ * @brief Unsubscribe from 'set_source' updates.
+ *
+ * Stops the subscription and frees resources associated with the handle.
+ *
+ * @param camera_server The camera_server instance.
+ * @param handle The subscription handle returned by mavsdk_camera_server_subscribe_set_source().
+ */
+CMAVSDK_EXPORT void mavsdk_camera_server_unsubscribe_set_source(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_set_source_handle_t);
+
+
+/**
+ * @brief Get the current respond set source (blocking).
+ *
+ * This function blocks until a value is available.
+ *
+ * @param telemetry The telemetry instance.
+ * @param respond_set_source_out Pointer to store the result.
+ */
+CMAVSDK_EXPORT
+mavsdk_camera_server_result_t
+mavsdk_camera_server_respond_set_source(
+    mavsdk_camera_server_t camera_server,
+    mavsdk_camera_server_camera_feedback_t set_source_feedback);
 
 
 /**

@@ -130,6 +130,18 @@ class CaptureInfoCStruct(ctypes.Structure):
     ]
 
 
+class CameraSourceCStruct(ctypes.Structure):
+    """
+    Internal C structure for CameraSource.
+    Used only for C library communication.
+    """
+
+    _fields_ = [
+        ("primary_source", ctypes.c_int),
+        ("secondary_source", ctypes.c_int),
+    ]
+
+
 class StorageInformationCStruct(ctypes.Structure):
     """
     Internal C structure for StorageInformation.
@@ -463,6 +475,45 @@ class CaptureInfo:
         fields.append(f"index={self.index}")
         fields.append(f"file_url={self.file_url}")
         return f"CaptureInfo({', '.join(fields)})"
+
+
+class CameraSource:
+    """
+    Camera source message
+    """
+
+    class Source(IntEnum):
+        """Camera source type."""
+
+        DEFAULT = 0
+        RGB = 1
+        IR = 2
+        NDVI = 3
+
+    def __init__(self, primary_source=None, secondary_source=None):
+        self.primary_source = primary_source
+        self.secondary_source = secondary_source
+
+    @classmethod
+    def from_c_struct(cls, c_struct):
+        """Convert from C structure to Python object"""
+        instance = cls()
+        instance.primary_source = CameraSource.Source(c_struct.primary_source)
+        instance.secondary_source = CameraSource.Source(c_struct.secondary_source)
+        return instance
+
+    def to_c_struct(self):
+        """Convert to C structure for C library calls"""
+        c_struct = CameraSourceCStruct()
+        c_struct.primary_source = int(self.primary_source)
+        c_struct.secondary_source = int(self.secondary_source)
+        return c_struct
+
+    def __str__(self):
+        fields = []
+        fields.append(f"primary_source={self.primary_source}")
+        fields.append(f"secondary_source={self.secondary_source}")
+        return f"CameraSource({', '.join(fields)})"
 
 
 class StorageInformation:
@@ -985,6 +1036,46 @@ class CameraServer:
 
         return result
 
+    def subscribe_set_source(self, callback: Callable, user_data: Any = None):
+        """Subscribe to set camera source requests. Each request received should be responded to using RespondSetSource"""
+
+        def c_callback(c_data, ud):
+            try:
+                py_data = CameraSource.from_c_struct(c_data)
+
+                self._lib.mavsdk_camera_server_camera_source_destroy(
+                    ctypes.byref(c_data)
+                )
+
+                callback(py_data, user_data)
+
+            except Exception as e:
+                print(f"Error in set_source callback: {e}")
+
+        cb = SetSourceCallback(c_callback)
+        self._callbacks.append(cb)
+
+        return self._lib.mavsdk_camera_server_subscribe_set_source(
+            self._handle, cb, None
+        )
+
+    def unsubscribe_set_source(self, handle: ctypes.c_void_p):
+        """Unsubscribe from set_source"""
+        self._lib.mavsdk_camera_server_unsubscribe_set_source(self._handle, handle)
+
+    def respond_set_source(self, set_source_feedback):
+        """Get respond_set_source (blocking)"""
+
+        result_code = self._lib.mavsdk_camera_server_respond_set_source(
+            self._handle,
+            set_source_feedback,
+        )
+        result = CameraServerResult(result_code)
+        if result != CameraServerResult.SUCCESS:
+            raise Exception(f"respond_set_source failed: {result}")
+
+        return result
+
     def subscribe_storage_information(self, callback: Callable, user_data: Any = None):
         """Subscribe to camera storage information requests. Each request received should response to using RespondStorageInformation"""
 
@@ -1435,6 +1526,7 @@ StopVideoCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 StartVideoStreamingCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 StopVideoStreamingCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 SetModeCallback = ctypes.CFUNCTYPE(None, ctypes.c_int, ctypes.c_void_p)
+SetSourceCallback = ctypes.CFUNCTYPE(None, CameraSourceCStruct, ctypes.c_void_p)
 StorageInformationCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 CaptureStatusCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
 FormatStorageCallback = ctypes.CFUNCTYPE(None, ctypes.c_int32, ctypes.c_void_p)
@@ -1482,6 +1574,11 @@ _cmavsdk_lib.mavsdk_camera_server_capture_info_destroy.argtypes = [
     ctypes.POINTER(CaptureInfoCStruct)
 ]
 _cmavsdk_lib.mavsdk_camera_server_capture_info_destroy.restype = None
+
+_cmavsdk_lib.mavsdk_camera_server_camera_source_destroy.argtypes = [
+    ctypes.POINTER(CameraSourceCStruct)
+]
+_cmavsdk_lib.mavsdk_camera_server_camera_source_destroy.restype = None
 
 _cmavsdk_lib.mavsdk_camera_server_storage_information_destroy.argtypes = [
     ctypes.POINTER(StorageInformationCStruct)
@@ -1661,6 +1758,28 @@ _cmavsdk_lib.mavsdk_camera_server_respond_set_mode.argtypes = [
 ]
 
 _cmavsdk_lib.mavsdk_camera_server_respond_set_mode.restype = ctypes.c_int
+_cmavsdk_lib.mavsdk_camera_server_subscribe_set_source.argtypes = [
+    ctypes.c_void_p,
+    SetSourceCallback,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_subscribe_set_source.restype = ctypes.c_void_p
+# Unsubscribe
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_set_source.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_unsubscribe_set_source.restype = None
+
+
+_cmavsdk_lib.mavsdk_camera_server_respond_set_source.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_int,
+]
+
+_cmavsdk_lib.mavsdk_camera_server_respond_set_source.restype = ctypes.c_int
 _cmavsdk_lib.mavsdk_camera_server_subscribe_storage_information.argtypes = [
     ctypes.c_void_p,
     StorageInformationCallback,

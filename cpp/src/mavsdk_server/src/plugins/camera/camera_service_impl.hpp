@@ -924,6 +924,81 @@ public:
 
 
 
+    static rpc::camera::CameraSource::Source translateToRpcSource(const mavsdk::Camera::CameraSource::Source& source)
+    {
+        switch (source) {
+            default:
+                LogErr("Unknown source enum value: {}", static_cast<int>(source));
+            // FALLTHROUGH
+            case mavsdk::Camera::CameraSource::Source::Default:
+                return rpc::camera::CameraSource_Source_SOURCE_DEFAULT;
+            case mavsdk::Camera::CameraSource::Source::Rgb:
+                return rpc::camera::CameraSource_Source_SOURCE_RGB;
+            case mavsdk::Camera::CameraSource::Source::Ir:
+                return rpc::camera::CameraSource_Source_SOURCE_IR;
+            case mavsdk::Camera::CameraSource::Source::Ndvi:
+                return rpc::camera::CameraSource_Source_SOURCE_NDVI;
+        }
+    }
+
+    static mavsdk::Camera::CameraSource::Source translateFromRpcSource(const rpc::camera::CameraSource::Source source)
+    {
+        switch (source) {
+            default:
+                LogErr("Unknown source enum value: {}", static_cast<int>(source));
+            // FALLTHROUGH
+            case rpc::camera::CameraSource_Source_SOURCE_DEFAULT:
+                return mavsdk::Camera::CameraSource::Source::Default;
+            case rpc::camera::CameraSource_Source_SOURCE_RGB:
+                return mavsdk::Camera::CameraSource::Source::Rgb;
+            case rpc::camera::CameraSource_Source_SOURCE_IR:
+                return mavsdk::Camera::CameraSource::Source::Ir;
+            case rpc::camera::CameraSource_Source_SOURCE_NDVI:
+                return mavsdk::Camera::CameraSource::Source::Ndvi;
+        }
+    }
+
+
+    static std::unique_ptr<rpc::camera::CameraSource> translateToRpcCameraSource(const mavsdk::Camera::CameraSource &camera_source)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::CameraSource>();
+
+
+            
+                
+        rpc_obj->set_primary_source(translateToRpcSource(camera_source.primary_source));
+                
+            
+        
+            
+                
+        rpc_obj->set_secondary_source(translateToRpcSource(camera_source.secondary_source));
+                
+            
+        
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::CameraSource translateFromRpcCameraSource(const rpc::camera::CameraSource& camera_source)
+    {
+        mavsdk::Camera::CameraSource obj;
+
+
+            
+        obj.primary_source = translateFromRpcSource(camera_source.primary_source());
+            
+        
+            
+        obj.secondary_source = translateFromRpcSource(camera_source.secondary_source());
+            
+        
+        return obj;
+    }
+
+
+
+
 
     static std::unique_ptr<rpc::camera::Position> translateToRpcPosition(const mavsdk::Camera::Position &position)
     {
@@ -1547,6 +1622,41 @@ public:
             
         
         auto result = _lazy_plugin.maybe_plugin()->set_mode(request->component_id(), translateFromRpcMode(request->mode()));
+        
+
+        
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+        
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetSource(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::SetSourceRequest* request,
+        rpc::camera::SetSourceResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+            
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn("SetSource sent with a null request! Ignoring...");
+            return grpc::Status::OK;
+        }
+            
+        
+            
+        
+        auto result = _lazy_plugin.maybe_plugin()->set_source(request->component_id(), translateFromRpcCameraSource(request->camera_source()));
         
 
         
